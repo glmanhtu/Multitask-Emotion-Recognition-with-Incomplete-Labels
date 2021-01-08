@@ -9,9 +9,9 @@ import pandas as pd
 from PIL import Image
 from tqdm import tqdm
 parser = argparse.ArgumentParser(description='read two annotations files')
-parser.add_argument('--aff_wild2_pkl', type=str, default = '/media/Samsung/Aff-wild2-Challenge/annotations/annotations.pkl')
-parser.add_argument('--ExpW_pkl', type=str, default = '/media/Samsung/ExpW_dataset/annotations.pkl')
-parser.add_argument('--save_path', type=str, default='/media/Samsung/Aff-wild2-Challenge/exps/create_new_training_set_EXPR/create_annotation_file/mixed_EXPR_annotations.pkl')
+parser.add_argument('--aff_wild2_pkl', type=str, default = '/home/mvu/Documents/datasets/mixed/affwild-2/annotations.pkl')
+parser.add_argument('--ExpW_pkl', type=str, default = '/home/mvu/Documents/datasets/mixed/expw/annotations.pkl')
+parser.add_argument('--save_path', type=str, default='/home/mvu/Documents/datasets/mixed/mixed_EXPR_annotations.pkl')
 args = parser.parse_args()
 Expr_list = ['Neutral','Anger','Disgust','Fear','Happiness','Sadness','Surprise']
 def read_aff_wild2():

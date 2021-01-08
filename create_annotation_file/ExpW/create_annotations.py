@@ -11,11 +11,11 @@ from tqdm import tqdm
 parser = argparse.ArgumentParser(description='save annotations')
 parser.add_argument('--vis', action = 'store_true', 
                     help='whether to visualize the distribution')
-parser.add_argument('--image_dir', type=str, default = '/media/Samsung/ExpW_dataset/image/origin',
+parser.add_argument('--image_dir', type=str, default = '/home/mvu/Documents/datasets/expw/image/origin',
                     help='image dir')
-parser.add_argument('--lst_file', type=str, default='/media/Samsung/ExpW_dataset/label/label.lst')
-parser.add_argument('--output_dir', type=str, default= '/media/Samsung/ExpW_dataset/image/cropped_faces')
-parser.add_argument('--save_path', type=str, default='/media/Samsung/ExpW_dataset/annotations.pkl')
+parser.add_argument('--lst_file', type=str, default='/home/mvu/Documents/datasets/expw/label/label.lst')
+parser.add_argument('--output_dir', type=str, default= '/home/mvu/Documents/datasets/mixed/expw/cropped_faces')
+parser.add_argument('--save_path', type=str, default='/home/mvu/Documents/datasets/mixed/expw/annotations.pkl')
 args = parser.parse_args()
 if not os.path.exists(args.output_dir):
 	os.makedirs(args.output_dir)
@@ -71,7 +71,7 @@ def plot_distribution(data_file):
 	plt.show()
 
 if __name__== '__main__':
-	#data_file = read_all_image()
+	data_file = read_all_image()
 	data_file = pickle.load(open(args.save_path, 'rb'))
 	plot_distribution(data_file)
 

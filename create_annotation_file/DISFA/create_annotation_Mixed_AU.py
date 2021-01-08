@@ -12,9 +12,9 @@ from tqdm import tqdm
 import random
 parser = argparse.ArgumentParser(description='read two annotations files')
 parser.add_argument('--vis', action='store_true')
-parser.add_argument('--aff_wild2_pkl', type=str, default = '/media/Samsung/Aff-wild2-Challenge/annotations/annotations.pkl')
-parser.add_argument('--DISFA_pkl', type=str, default = '/media/Samsung/DISFA/annotations.pkl')
-parser.add_argument('--save_path', type=str, default='/media/Samsung/Aff-wild2-Challenge/exps/create_new_training_set_AU/create_annotation_file/mixed_AU_annotations.pkl')
+parser.add_argument('--aff_wild2_pkl', type=str, default = '/home/mvu/Documents/datasets/mixed/affwild-2/annotations.pkl')
+parser.add_argument('--DISFA_pkl', type=str, default = '/home/mvu/Documents/datasets/mixed/disfa/annotations.pkl')
+parser.add_argument('--save_path', type=str, default='/home/mvu/Documents/datasets/mixed/mixed_AU_annotations.pkl')
 args = parser.parse_args()
 AU_list = ['AU1','AU2','AU4','AU6','AU12','AU15','AU20','AU25']
 def read_data(data_dict):

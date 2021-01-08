@@ -10,11 +10,13 @@ from tqdm import tqdm
 parser = argparse.ArgumentParser(description='save annotations')
 parser.add_argument('--vis', action = 'store_true', 
                     help='whether to visualize the distribution')
-parser.add_argument('--annot_dir', type=str, default = '/media/Samsung/Aff-wild2-Challenge/annotations',
+parser.add_argument('--annot_dir', type=str, default = '/home/mvu/Documents/datasets/affwild-2/annotations',
                     help='annotation dir')
-parser.add_argument('--data_dir', type=str, default= '/media/Samsung/Aff-wild2-Challenge/cropped_aligned')
+parser.add_argument('--data_dir', type=str, default= '/home/mvu/Documents/datasets/affwild-2/cropped_aligned')
+parser.add_argument('--save_path', type=str, default='/home/mvu/Documents/datasets/mixed/affwild-2/annotations.pkl')
 
 args = parser.parse_args()
+os.makedirs(os.path.dirname(args.save_path), exist_ok=True)
 def read_AU(txt_file):
 	with open(txt_file, 'r') as f:
 		lines = f.readlines()
@@ -145,7 +147,6 @@ def main():
 				plt.ylabel('Arousal')
 				plt.colorbar()
 				plt.show()
-	save_path = os.path.join(annot_dir, 'annotations.pkl')
-	pickle.dump(data_file, open(save_path, 'wb'))
+	pickle.dump(data_file, open(args.save_path, 'wb'))
 if __name__== '__main__':
 	main()
