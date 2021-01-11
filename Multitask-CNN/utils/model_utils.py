@@ -32,7 +32,7 @@ def averaged_f1_score(input, target):
     N, label_size = input.shape
     f1s = []
     for i in range(label_size):
-        f1 = f1_score(input[:, i], target[:, i])
+        f1 = f1_score(target[:, i], input[:, i])
         f1s.append(f1)
     return np.mean(f1s), f1s
 def accuracy(input, target):
@@ -75,9 +75,9 @@ def EXPR_metric(x, y):
     acc = accuracy(x, y)
     return [f1, acc], 0.67*f1 + 0.33*acc
 def AU_metric(x, y):
-    f1_av,_  = averaged_f1_score(x, y)
-    x = x.reshape(-1)
-    y = y.reshape(-1)
+    f1_av,_  = averaged_f1_score(x.astype(np.int8), y.astype(np.int8))
+    x = x.reshape(-1).astype(np.int8)
+    y = y.reshape(-1).astype(np.int8)
     acc_av  = accuracy(x, y)
     return [f1_av, acc_av], 0.5*f1_av + 0.5*acc_av
 
@@ -450,7 +450,7 @@ class BackBone(nn.Module):
                         ])
             setattr(self, 'augment_transforms', transform_list)
         else:
-            raise ValueError("Pretrained dataset %s not recognized." % pretrained_dataset)
+            raise ValueError("Pretrained dataset %s not recognized." % self._opt.pretrained_dataset)
         setattr(feature_extractor, 'name', model_name)
         # reform the final layer of feature extrator, turn it into a Identity module
         last_layer_name, last_module = list(feature_extractor.named_modules())[-1]

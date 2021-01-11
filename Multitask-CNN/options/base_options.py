@@ -30,7 +30,7 @@ class BaseOptions():
         self._parser.add_argument('--tasks', type=str, default = ['EXPR','AU','VA'],nargs="+")
         # 'dataset_names' need to be in the same order as the 'tasks'
         self._parser.add_argument('--hidden_size', type=int, default = 128, help='the embedding size of each output head' )
-        self._parser.add_argument('--batch_size', type=int, default= 20, help='input batch size per task')
+        self._parser.add_argument('--batch_size', type=int, default= 10, help='input batch size per task')
         self._parser.add_argument('--image_size', type=int, default= 224, help='input image size') # reducing iamge size is acceptable
         self._parser.add_argument('--gpu_ids', type=str, default='0', help='gpu ids: e.g. 0  0,1,2, 0,2. use -1 for CPU')
         self._parser.add_argument('--name', type=str, default='experiment_1', help='name of the experiment. It decides where to store samples and models')

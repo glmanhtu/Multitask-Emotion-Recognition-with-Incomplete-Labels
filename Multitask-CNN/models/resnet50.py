@@ -115,152 +115,152 @@ class ResNet50(BaseModel):
             self._input_image[t].resize_(input[t]['image'].size()).copy_(input[t]['image'])
             self._label[t].resize_(input[t]['label'].size()).copy_(input[t]['label'])
             if len(self._gpu_ids) > 0:
-                self._input_image[t] = self._input_image[t].cuda(self._gpu_ids[0], async=True)
-                self._label[t] = self._label[t].cuda(self._gpu_ids[0], async=True)
+                self._input_image[t] = self._input_image[t].cuda(self._gpu_ids[0], non_blocking=True)
+                self._label[t] = self._label[t].cuda(self._gpu_ids[0], non_blocking=True)
 
-        def set_train(self):
-            self.resnet50.train()
-            self._is_train = True
+    def set_train(self):
+        self.resnet50.train()
+        self._is_train = True
 
-        def set_eval(self):
-            self.resnet50.eval()
-            self._is_train = False
+    def set_eval(self):
+        self.resnet50.eval()
+        self._is_train = False
 
-        def forward(self, return_estimates=False, input_tasks=None):
-            # validation the eval_task
-            val_dict = dict()
-            out_dict = dict()
-            loss = 0.
-            if not self._is_train:
-                tasks = self._opt.tasks if input_tasks is None else input_tasks
-                for t in tasks:
-                    with torch.no_grad():
-                        input_image = Variable(self._input_image[t])
-                        label = Variable(self._label[t])
-                        output = self.resnet50(input_image)
-                    criterion_task = self._criterions_per_task[t].get_task_loss()
-                    loss_task = criterion_task(output['output'][t], label)
-                    if t != 'VA':
-                        val_dict['loss_' + t] = loss_task.item()
-                        loss += self.lambdas_per_task[t] * loss_task
-                    else:
-                        loss_v, loss_a = loss_task
-                        val_dict['loss_valence'] = loss_v.item()
-                        val_dict['loss_arousal'] = loss_a.item()
-                        l_v, l_a = self.lambdas_per_task[t]
-                        loss += l_v * loss_v + l_a * loss_a
-                    if return_estimates:
-                        for task in self._opt.tasks:
-                            out_dict[t] = self._format_estimates(output['output'])
-                    else:
-                        for task in self._opt.tasks:
-                            out_dict[t] = dict(
-                                [(key, output['output'][key].cpu().numpy()) for key in output['output'].keys()])
-                val_dict['loss'] = loss.item()
-            else:
-                raise ValueError("Do not call forward function in training mode. USE optimize_parameters() INSTEAD.")
-
-            return out_dict, val_dict
-
-        def _format_estimates(self, output):
-            estimates = {}
-            for task in output.keys():
-                if task == 'AU':
-                    o = (torch.sigmoid(output['AU'].cpu()) > 0.5).type(torch.LongTensor)
-                    estimates['AU'] = o.numpy()
-                elif task == 'EXPR':
-                    o = F.softmax(output['EXPR'].cpu(), dim=-1).argmax(-1).type(torch.LongTensor)
-                    estimates['EXPR'] = o.numpy()
-                elif task == 'VA':
-                    N = self._opt.digitize_num
-                    v = F.softmax(output['VA'][:, :N].cpu(), dim=-1).numpy()
-                    a = F.softmax(output['VA'][:, N:].cpu(), dim=-1).numpy()
-                    bins = np.linspace(-1, 1, num=self._opt.digitize_num)
-                    v = (bins * v).sum(-1)
-                    a = (bins * a).sum(-1)
-                    estimates['VA'] = np.stack([v, a], axis=1)
-            return estimates
-
-        def optimize_parameters(self):
-            train_dict = dict()
-            loss = 0.
-            if self._is_train:
-                for t in self._opt.tasks:
+    def forward(self, return_estimates=False, input_tasks=None):
+        # validation the eval_task
+        val_dict = dict()
+        out_dict = dict()
+        loss = 0.
+        if not self._is_train:
+            tasks = self._opt.tasks if input_tasks is None else input_tasks
+            for t in tasks:
+                with torch.no_grad():
                     input_image = Variable(self._input_image[t])
                     label = Variable(self._label[t])
                     output = self.resnet50(input_image)
-                    criterion_task = self._criterions_per_task[t].get_task_loss()
-                    loss_task = criterion_task(output['output'][t], label)
-                    if t != 'VA':
-                        train_dict['loss_' + t] = loss_task.item()
-                        loss += self.lambdas_per_task[t] * loss_task
-                    else:
-                        loss_v, loss_a = loss_task
-                        train_dict['loss_valence'] = loss_v.item()
-                        train_dict['loss_arousal'] = loss_a.item()
-                        l_v, l_a = self.lambdas_per_task[t]
-                        loss += l_v * loss_v + l_a * loss_a
-                train_dict['loss'] = loss.item()
-                self._optimizer_F.zero_grad()
-                loss.backward()
-                self._optimizer_F.step()
-                self.loss_dict = train_dict
-            else:
-                raise ValueError("Do not call optimize_parameters function in test mode. USE forward() INSTEAD.")
-
-        def optimize_parameters_kd(self, teacher_model):
-            train_dict = dict()
-            loss = 0.
-            loss_per_task = {'EXPR': 0, 'valence': 0, 'arousal': 0, 'AU': 0}
-            if self._is_train:
-                for t in self._opt.tasks:
-                    input_image = Variable(self._input_image[t])
-                    label = Variable(self._label[t])
-                    output = self.resnet50(input_image)
-                    with torch.no_grad():
-                        teacher_preds = teacher_model.resnet50(input_image)
+                criterion_task = self._criterions_per_task[t].get_task_loss()
+                loss_task = criterion_task(output['output'][t], label)
+                if t != 'VA':
+                    val_dict['loss_' + t] = loss_task.item()
+                    loss += self.lambdas_per_task[t] * loss_task
+                else:
+                    loss_v, loss_a = loss_task
+                    val_dict['loss_valence'] = loss_v.item()
+                    val_dict['loss_arousal'] = loss_a.item()
+                    l_v, l_a = self.lambdas_per_task[t]
+                    loss += l_v * loss_v + l_a * loss_a
+                if return_estimates:
                     for task in self._opt.tasks:
-                        distillation_task = self._criterions_per_task[task].get_distillation_loss()
-                        loss_task = distillation_task(output['output'][task], teacher_preds['output'][task])
-                        if task == t:
-                            if task != 'VA':
-                                criterion_task = self._criterions_per_task[t].get_task_loss()
-                                loss_task = self._opt.lambda_teacher * loss_task + (
-                                            1 - self._opt.lambda_teacher) * criterion_task(output['output'][t], label)
-                            else:
-                                criterion_task = self._criterions_per_task[t].get_task_loss()
-                                loss_v, loss_a = criterion_task(output['output'][t], label)
-                                loss_task = [
-                                    self._opt.lambda_teacher * loss_task[0] + (1 - self._opt.lambda_teacher) * loss_v,
-                                    self._opt.lambda_teacher * loss_task[1] + (1 - self._opt.lambda_teacher) * loss_a, ]
+                        out_dict[t] = self._format_estimates(output['output'])
+                else:
+                    for task in self._opt.tasks:
+                        out_dict[t] = dict(
+                            [(key, output['output'][key].cpu().numpy()) for key in output['output'].keys()])
+            val_dict['loss'] = loss.item()
+        else:
+            raise ValueError("Do not call forward function in training mode. USE optimize_parameters() INSTEAD.")
+
+        return out_dict, val_dict
+
+    def _format_estimates(self, output):
+        estimates = {}
+        for task in output.keys():
+            if task == 'AU':
+                o = (torch.sigmoid(output['AU'].cpu()) > 0.5).type(torch.LongTensor)
+                estimates['AU'] = o.numpy()
+            elif task == 'EXPR':
+                o = F.softmax(output['EXPR'].cpu(), dim=-1).argmax(-1).type(torch.LongTensor)
+                estimates['EXPR'] = o.numpy()
+            elif task == 'VA':
+                N = self._opt.digitize_num
+                v = F.softmax(output['VA'][:, :N].cpu(), dim=-1).numpy()
+                a = F.softmax(output['VA'][:, N:].cpu(), dim=-1).numpy()
+                bins = np.linspace(-1, 1, num=self._opt.digitize_num)
+                v = (bins * v).sum(-1)
+                a = (bins * a).sum(-1)
+                estimates['VA'] = np.stack([v, a], axis=1)
+        return estimates
+
+    def optimize_parameters(self):
+        train_dict = dict()
+        loss = 0.
+        if self._is_train:
+            for t in self._opt.tasks:
+                input_image = Variable(self._input_image[t])
+                label = Variable(self._label[t])
+                output = self.resnet50(input_image)
+                criterion_task = self._criterions_per_task[t].get_task_loss()
+                loss_task = criterion_task(output['output'][t], label)
+                if t != 'VA':
+                    train_dict['loss_' + t] = loss_task.item()
+                    loss += self.lambdas_per_task[t] * loss_task
+                else:
+                    loss_v, loss_a = loss_task
+                    train_dict['loss_valence'] = loss_v.item()
+                    train_dict['loss_arousal'] = loss_a.item()
+                    l_v, l_a = self.lambdas_per_task[t]
+                    loss += l_v * loss_v + l_a * loss_a
+            train_dict['loss'] = loss.item()
+            self._optimizer_F.zero_grad()
+            loss.backward()
+            self._optimizer_F.step()
+            self.loss_dict = train_dict
+        else:
+            raise ValueError("Do not call optimize_parameters function in test mode. USE forward() INSTEAD.")
+
+    def optimize_parameters_kd(self, teacher_model):
+        train_dict = dict()
+        loss = 0.
+        loss_per_task = {'EXPR': 0, 'valence': 0, 'arousal': 0, 'AU': 0}
+        if self._is_train:
+            for t in self._opt.tasks:
+                input_image = Variable(self._input_image[t])
+                label = Variable(self._label[t])
+                output = self.resnet50(input_image)
+                with torch.no_grad():
+                    teacher_preds = teacher_model.resnet50(input_image)
+                for task in self._opt.tasks:
+                    distillation_task = self._criterions_per_task[task].get_distillation_loss()
+                    loss_task = distillation_task(output['output'][task], teacher_preds['output'][task])
+                    if task == t:
                         if task != 'VA':
-                            loss_per_task[task] += loss_task.item()
-                            loss += loss_task
+                            criterion_task = self._criterions_per_task[t].get_task_loss()
+                            loss_task = self._opt.lambda_teacher * loss_task + (
+                                        1 - self._opt.lambda_teacher) * criterion_task(output['output'][t], label)
                         else:
-                            loss_v, loss_a = loss_task
-                            loss_per_task['valence'] += loss_v.item()
-                            loss_per_task['arousal'] += loss_a.item()
-                            loss += loss_v + loss_a
-                loss = loss / len(self._opt.tasks)
-                for key in loss_per_task.keys():
-                    loss_task = loss_per_task[key]
-                    train_dict['loss_' + key] = loss_task / len(self._opt.tasks)
-                train_dict['loss'] = loss.item()
-                self._optimizer_F.zero_grad()
-                loss.backward()
-                self._optimizer_F.step()
-                self.loss_dict = train_dict
-            else:
-                raise ValueError("Do not call optimize_parameters function in test mode. USE forward() INSTEAD.")
+                            criterion_task = self._criterions_per_task[t].get_task_loss()
+                            loss_v, loss_a = criterion_task(output['output'][t], label)
+                            loss_task = [
+                                self._opt.lambda_teacher * loss_task[0] + (1 - self._opt.lambda_teacher) * loss_v,
+                                self._opt.lambda_teacher * loss_task[1] + (1 - self._opt.lambda_teacher) * loss_a, ]
+                    if task != 'VA':
+                        loss_per_task[task] += loss_task.item()
+                        loss += loss_task
+                    else:
+                        loss_v, loss_a = loss_task
+                        loss_per_task['valence'] += loss_v.item()
+                        loss_per_task['arousal'] += loss_a.item()
+                        loss += loss_v + loss_a
+            loss = loss / len(self._opt.tasks)
+            for key in loss_per_task.keys():
+                loss_task = loss_per_task[key]
+                train_dict['loss_' + key] = loss_task / len(self._opt.tasks)
+            train_dict['loss'] = loss.item()
+            self._optimizer_F.zero_grad()
+            loss.backward()
+            self._optimizer_F.step()
+            self.loss_dict = train_dict
+        else:
+            raise ValueError("Do not call optimize_parameters function in test mode. USE forward() INSTEAD.")
 
-        def get_current_errors(self):
-            return self.loss_dict
+    def get_current_errors(self):
+        return self.loss_dict
 
-        def get_metrics_per_task(self):
-            return {"AU": AU_metric, "EXPR": EXPR_metric, "VA": VA_metric}
+    def get_metrics_per_task(self):
+        return {"AU": AU_metric, "EXPR": EXPR_metric, "VA": VA_metric}
 
-        def get_current_LR(self):
-            LR = []
-            for param_group in self._optimizer_F.param_groups:
-                LR.append(param_group['lr'])
-            print('current learning rate: {}'.format(np.unique(LR)))
+    def get_current_LR(self):
+        LR = []
+        for param_group in self._optimizer_F.param_groups:
+            LR.append(param_group['lr'])
+        print('current learning rate: {}'.format(np.unique(LR)))

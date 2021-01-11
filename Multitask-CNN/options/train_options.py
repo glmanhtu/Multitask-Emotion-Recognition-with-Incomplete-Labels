@@ -4,7 +4,7 @@ from .base_options import BaseOptions
 class TrainOptions(BaseOptions):
     def initialize(self):
         BaseOptions.initialize(self)
-        self._parser.add_argument('--print_freq_s', type=int, default= 5, help='frequency of showing training results on console')
+        self._parser.add_argument('--print_freq_s', type=int, default= 120, help='frequency of showing training results on console')
         self._parser.add_argument('--lr_policy', type=str, default = 'step', choices = ['lambda', 'step', 'plateau'])
         self._parser.add_argument('--lr_decay_epochs', type=int, default= 3, help="learning rate decays by 0.1 after every # epochs (lr_policy is 'step')")
         self._parser.add_argument('--teacher_nepochs', type=int, default= 8, help='# of epochs to train')
