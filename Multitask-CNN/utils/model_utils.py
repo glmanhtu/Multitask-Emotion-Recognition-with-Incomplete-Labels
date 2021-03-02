@@ -327,7 +327,7 @@ def load_model(model_name, MODEL_DIR):
     func = getattr(mod, model_name)
     net = func(weights_path=weights_path)
     return net
-def compose_transforms(meta, center_crop=True, new_imageSize = None,
+def compose_transforms(meta, center_crop=False, new_imageSize = None,
                       override_meta_imsize=False):
     """Compose preprocessing transforms for model
 
@@ -362,7 +362,7 @@ def compose_transforms(meta, center_crop=True, new_imageSize = None,
     transform_list.append(normalize)
     return transforms.Compose(transform_list)
 
-def augment_transforms(meta, random_crop=True, new_imageSize = None,
+def augment_transforms(meta, random_crop=False, new_imageSize = None,
                       override_meta_imsize=False):
     normalize = transforms.Normalize(mean=meta['mean'], std=meta['std'])
     im_size = meta['imageSize']

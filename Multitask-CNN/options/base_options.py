@@ -26,8 +26,8 @@ class BaseOptions():
         self._parser.add_argument('--lambda_teacher', type=float, default = 0.4, help='weight for distillation loss when the ground truth exists (between 0 to 1)')
         
         self._parser.add_argument('--force_balance', action='store_true', help='force data balanced for training set')
-        self._parser.add_argument('--dataset_names', type=str, default = ['Mixed_EXPR','Mixed_AU','Mixed_VA'],nargs="+")
-        self._parser.add_argument('--tasks', type=str, default = ['EXPR','AU','VA'],nargs="+")
+        self._parser.add_argument('--dataset_names', type=str, default = ['Mixed_EXPR','Mixed_VA'],nargs="+")
+        self._parser.add_argument('--tasks', type=str, default = ['EXPR','VA'],nargs="+")
         # 'dataset_names' need to be in the same order as the 'tasks'
         self._parser.add_argument('--hidden_size', type=int, default = 128, help='the embedding size of each output head' )
         self._parser.add_argument('--batch_size', type=int, default= 10, help='input batch size per task')

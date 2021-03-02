@@ -64,6 +64,7 @@ class Trainer:
                 print('End of epoch %d / %d \t Time Taken: %d sec (%d min or %d h)' %
                       (i_epoch, self._opt.teacher_nepochs , time_epoch,
                        time_epoch / 60, time_epoch / 3600))
+            return 
         else:
             self._model.resnet50.load_state_dict(torch.load(self._opt.pretrained_teacher_model))
         # record the teacher_model

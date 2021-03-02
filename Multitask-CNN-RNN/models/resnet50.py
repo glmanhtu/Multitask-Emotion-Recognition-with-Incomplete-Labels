@@ -119,8 +119,8 @@ class ResNet50(BaseModel):
             self._input_image[t].resize_(input[t]['image'].size()).copy_(input[t]['image'])
             self._label[t].resize_(input[t]['label'].size()).copy_(input[t]['label'])
             if len(self._gpu_ids) > 0:
-                self._input_image[t] = self._input_image[t].cuda(self._gpu_ids[0], async=True)
-                self._label[t] = self._label[t].cuda(self._gpu_ids[0], async=True)
+                self._input_image[t] = self._input_image[t].cuda(self._gpu_ids[0], non_blocking=True)
+                self._label[t] = self._label[t].cuda(self._gpu_ids[0], non_blocking=True)
     def set_train(self):
         self.resnet50_GRU.train()
         self._is_train = True

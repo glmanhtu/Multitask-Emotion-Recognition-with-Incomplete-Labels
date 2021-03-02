@@ -1,0 +1,550 @@
+python3.7 train.py --force_balance --name image_size_112_n_students_5_pretrained --image_size 112 --batch_size 64 --print_freq_s 240 --pretrained_teacher_model /home/mvu/Documents/pretrained/FG2020-ABAW/Multitask-CNN/net_epoch_teacher_id_resnet50.pth
+------------ Options -------------
+AU_criterion: BCE
+AU_label_size: 8
+EXPR_criterion: CE
+EXPR_label_size: 7
+F_adam_b1: 0.5
+F_adam_b2: 0.999
+VA_criterion: CCC_CE
+VA_label_size: 2
+batch_size: 64
+checkpoints_dir: ./checkpoints
+dataset_names: ['Mixed_EXPR', 'Mixed_AU', 'Mixed_VA']
+digitize_num: 20
+force_balance: True
+gpu_ids: [0]
+hidden_size: 128
+image_size: 112
+is_train: True
+lambda_A: 1.0
+lambda_AU: 8.0
+lambda_EXPR: 1.0
+lambda_V: 1.0
+lambda_ccc: 1.0
+lambda_teacher: 0.4
+load_epoch: 0
+loggings_dir: ./loggings
+lr_F: 0.0001
+lr_decay_epochs: 3
+lr_policy: step
+model_name: resnet50
+n_students: 5
+n_threads_test: 8
+n_threads_train: 8
+name: image_size_112_n_students_5_pretrained
+optimizer: Adam
+pretrained_dataset: ferplus
+pretrained_teacher_model: /home/mvu/Documents/pretrained/FG2020-ABAW/Multitask-CNN/net_epoch_teacher_id_resnet50.pth
+print_freq_s: 240
+student_nepochs: 3
+tasks: ['EXPR', 'AU', 'VA']
+teacher_nepochs: 8
+temperature: 1.5
+-------------- End ----------------
+./checkpoints/image_size_112_n_students_5_pretrained
+Model ResNet50 was created
+Dataset dataset_Mixed_EXPR was created
+Dataset dataset_Mixed_AU was created
+Dataset dataset_Mixed_VA was created
+100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 361278/361278 [00:00<00:00, 1628292.06it/s]
+Dataset dataset_Mixed_EXPR was created
+Dataset dataset_Mixed_AU was created
+Dataset dataset_Mixed_VA was created
+Traning Tasks:['EXPR', 'AU', 'VA']
+The actual batch size is 64*3=192
+Training sets: 1046400 images (348800 images per task)
+Validation sets
+EXPR: 319488 images
+AU: 67200 images
+VA: 338880 images
+Model ResNet50 was created
+current learning rate: [0.0001]
+Time 16:19	Batch Time 0.45	 Epoch [1]([520/5450])	 loss 2.0801	loss_EXPR 0.3090	loss_AU 0.4293	loss_valence 0.6801	loss_arousal 0.6616
+Time 16:23	Batch Time 0.45	 Epoch [1]([1042/5450])	 loss 1.5766	loss_EXPR 0.2483	loss_AU 0.2510	loss_valence 0.5140	loss_arousal 0.5632
+Time 16:27	Batch Time 0.45	 Epoch [1]([1562/5450])	 loss 1.3467	loss_EXPR 0.2135	loss_AU 0.1931	loss_valence 0.4438	loss_arousal 0.4963
+Time 16:31	Batch Time 0.45	 Epoch [1]([2079/5450])	 loss 1.3228	loss_EXPR 0.2207	loss_AU 0.1937	loss_valence 0.4593	loss_arousal 0.4491
+Time 16:35	Batch Time 0.45	 Epoch [1]([2597/5450])	 loss 1.2850	loss_EXPR 0.2189	loss_AU 0.1596	loss_valence 0.4533	loss_arousal 0.4532
+Time 16:39	Batch Time 0.47	 Epoch [1]([3114/5450])	 loss 1.1295	loss_EXPR 0.1856	loss_AU 0.1487	loss_valence 0.4278	loss_arousal 0.3674
+Time 16:43	Batch Time 0.45	 Epoch [1]([3629/5450])	 loss 1.3120	loss_EXPR 0.2222	loss_AU 0.1603	loss_valence 0.4642	loss_arousal 0.4653
+Time 16:47	Batch Time 0.45	 Epoch [1]([4149/5450])	 loss 1.1288	loss_EXPR 0.1731	loss_AU 0.1700	loss_valence 0.3827	loss_arousal 0.4030
+Time 16:51	Batch Time 0.47	 Epoch [1]([4673/5450])	 loss 1.2000	loss_EXPR 0.1784	loss_AU 0.1791	loss_valence 0.4259	loss_arousal 0.4165
+Time 16:55	Batch Time 0.46	 Epoch [1]([5189/5450])	 loss 1.1507	loss_EXPR 0.1849	loss_AU 0.1465	loss_valence 0.4261	loss_arousal 0.3933
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1664/1664 [02:25<00:00, 11.46it/s]
+EXPR Validation 16:57: Epoch [1] Step [348800] loss 1.6240 Eval_0 0.3078 Eval_1 0.3806
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 350/350 [00:30<00:00, 11.55it/s]
+/home/mvu/.local/lib/python3.7/site-packages/sklearn/metrics/classification.py:1135: UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 due to no predicted samples.
+  'precision', 'predicted', average, warn_for)
+AU Validation 16:57: Epoch [1] Step [348800] loss 1.3964 Eval_0 0.1918 Eval_1 0.9458
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1765/1765 [02:35<00:00, 11.38it/s]
+VA Validation 16:57: Epoch [1] Step [348800] loss nan Eval_0 0.3220 Eval_1 0.4232
+Validation Performance:
+EXPR Metric: 0.3318   AU Metric: 0.5688   valence Metric: 0.3220   arousal Metric: 0.4232
+validation acc improved, from 0.0000 to 1.6459
+saving the model at the end of epoch 1, steps 348800
+saved net: ./checkpoints/image_size_112_n_students_5_pretrained/net_epoch_student_0_id_resnet50.pth
+End of epoch 1 / 3 	 Time Taken: 2864 sec (47 min or 0 h)
+current learning rate: [0.0001]
+Time 17:02	Batch Time 0.41	 Epoch [2]([0/5450])	 loss 1.0443	loss_EXPR 0.2050	loss_AU 0.1579	loss_valence 0.3483	loss_arousal 0.3331
+Time 17:06	Batch Time 0.45	 Epoch [2]([517/5450])	 loss 1.0293	loss_EXPR 0.2048	loss_AU 0.1491	loss_valence 0.3338	loss_arousal 0.3416
+Time 17:10	Batch Time 0.46	 Epoch [2]([1029/5450])	 loss 1.0270	loss_EXPR 0.1782	loss_AU 0.1423	loss_valence 0.3748	loss_arousal 0.3317
+Time 17:14	Batch Time 0.48	 Epoch [2]([1542/5450])	 loss 1.0619	loss_EXPR 0.1711	loss_AU 0.1528	loss_valence 0.3574	loss_arousal 0.3805
+Time 17:18	Batch Time 0.46	 Epoch [2]([2057/5450])	 loss 0.9891	loss_EXPR 0.1504	loss_AU 0.1480	loss_valence 0.3400	loss_arousal 0.3506
+Time 17:22	Batch Time 0.47	 Epoch [2]([2574/5450])	 loss 1.0077	loss_EXPR 0.1717	loss_AU 0.1386	loss_valence 0.3662	loss_arousal 0.3313
+Time 17:26	Batch Time 0.45	 Epoch [2]([3088/5450])	 loss 0.9687	loss_EXPR 0.1623	loss_AU 0.1617	loss_valence 0.3340	loss_arousal 0.3107
+Time 17:30	Batch Time 0.48	 Epoch [2]([3602/5450])	 loss 1.0759	loss_EXPR 0.2049	loss_AU 0.1508	loss_valence 0.3345	loss_arousal 0.3856
+Time 17:34	Batch Time 0.46	 Epoch [2]([4116/5450])	 loss 0.9779	loss_EXPR 0.1608	loss_AU 0.1377	loss_valence 0.3441	loss_arousal 0.3353
+Time 17:38	Batch Time 0.47	 Epoch [2]([4628/5450])	 loss 0.9973	loss_EXPR 0.1825	loss_AU 0.1310	loss_valence 0.3220	loss_arousal 0.3617
+Time 17:42	Batch Time 0.45	 Epoch [2]([5144/5450])	 loss 1.0136	loss_EXPR 0.1628	loss_AU 0.1430	loss_valence 0.3497	loss_arousal 0.3580
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1664/1664 [02:17<00:00, 12.14it/s]
+EXPR Validation 17:45: Epoch [2] Step [697600] loss 1.5164 Eval_0 0.3137 Eval_1 0.4220
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 350/350 [00:29<00:00, 11.78it/s]
+/home/mvu/.local/lib/python3.7/site-packages/sklearn/metrics/classification.py:1135: UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 due to no predicted samples.
+  'precision', 'predicted', average, warn_for)
+AU Validation 17:45: Epoch [2] Step [697600] loss 1.4241 Eval_0 0.1827 Eval_1 0.9440
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1765/1765 [02:37<00:00, 11.24it/s]
+VA Validation 17:45: Epoch [2] Step [697600] loss nan Eval_0 0.3102 Eval_1 0.4713
+Validation Performance:
+EXPR Metric: 0.3494   AU Metric: 0.5633   valence Metric: 0.3102   arousal Metric: 0.4713
+validation acc improved, from 1.6459 to 1.6942
+saving the model at the end of epoch 2, steps 697600
+saved net: ./checkpoints/image_size_112_n_students_5_pretrained/net_epoch_student_0_id_resnet50.pth
+End of epoch 2 / 3 	 Time Taken: 2880 sec (48 min or 0 h)
+current learning rate: [0.0001]
+Time 17:50	Batch Time 0.41	 Epoch [3]([0/5450])	 loss 0.9364	loss_EXPR 0.1554	loss_AU 0.1403	loss_valence 0.3146	loss_arousal 0.3262
+Time 17:54	Batch Time 0.46	 Epoch [3]([515/5450])	 loss 1.0314	loss_EXPR 0.1768	loss_AU 0.1380	loss_valence 0.3430	loss_arousal 0.3737
+Time 17:58	Batch Time 0.46	 Epoch [3]([1023/5450])	 loss 0.9116	loss_EXPR 0.1614	loss_AU 0.1445	loss_valence 0.2969	loss_arousal 0.3088
+Time 18:02	Batch Time 0.46	 Epoch [3]([1537/5450])	 loss 0.9882	loss_EXPR 0.1715	loss_AU 0.1411	loss_valence 0.3096	loss_arousal 0.3660
+Time 18:06	Batch Time 0.47	 Epoch [3]([2048/5450])	 loss 0.9225	loss_EXPR 0.1561	loss_AU 0.1423	loss_valence 0.3104	loss_arousal 0.3137
+Time 18:10	Batch Time 0.47	 Epoch [3]([2561/5450])	 loss 0.8617	loss_EXPR 0.1319	loss_AU 0.1379	loss_valence 0.3061	loss_arousal 0.2858
+Time 18:14	Batch Time 0.46	 Epoch [3]([3078/5450])	 loss 0.9238	loss_EXPR 0.1413	loss_AU 0.1403	loss_valence 0.3151	loss_arousal 0.3270
+Time 18:18	Batch Time 0.47	 Epoch [3]([3601/5450])	 loss 0.9444	loss_EXPR 0.1509	loss_AU 0.1351	loss_valence 0.3202	loss_arousal 0.3382
+Time 18:22	Batch Time 0.46	 Epoch [3]([4114/5450])	 loss 0.9251	loss_EXPR 0.1388	loss_AU 0.1495	loss_valence 0.3205	loss_arousal 0.3163
+Time 18:26	Batch Time 0.48	 Epoch [3]([4628/5450])	 loss 0.8830	loss_EXPR 0.1387	loss_AU 0.1346	loss_valence 0.3031	loss_arousal 0.3065
+Time 18:30	Batch Time 0.46	 Epoch [3]([5144/5450])	 loss 0.9285	loss_EXPR 0.1779	loss_AU 0.1584	loss_valence 0.2987	loss_arousal 0.2934
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1664/1664 [02:26<00:00, 11.32it/s]
+EXPR Validation 18:33: Epoch [3] Step [1046400] loss 1.4798 Eval_0 0.3135 Eval_1 0.4292
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 350/350 [00:31<00:00, 11.28it/s]
+/home/mvu/.local/lib/python3.7/site-packages/sklearn/metrics/classification.py:1135: UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 due to no predicted samples.
+  'precision', 'predicted', average, warn_for)
+AU Validation 18:33: Epoch [3] Step [1046400] loss 1.4712 Eval_0 0.1699 Eval_1 0.9424
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1765/1765 [02:29<00:00, 11.81it/s]
+VA Validation 18:33: Epoch [3] Step [1046400] loss nan Eval_0 0.3086 Eval_1 0.4843
+Validation Performance:
+EXPR Metric: 0.3517   AU Metric: 0.5562   valence Metric: 0.3086   arousal Metric: 0.4843
+validation acc improved, from 1.6942 to 1.7008
+saving the model at the end of epoch 3, steps 1046400
+saved net: ./checkpoints/image_size_112_n_students_5_pretrained/net_epoch_student_0_id_resnet50.pth
+End of epoch 3 / 3 	 Time Taken: 2883 sec (48 min or 0 h)
+Model ResNet50 was created
+current learning rate: [0.0001]
+Time 18:38	Batch Time 0.42	 Epoch [1]([0/5450])	 loss 4.9305	loss_EXPR 1.0421	loss_AU 0.7324	loss_valence 1.5680	loss_arousal 1.5880
+Time 18:42	Batch Time 0.45	 Epoch [1]([527/5450])	 loss 2.0423	loss_EXPR 0.2692	loss_AU 0.4249	loss_valence 0.6767	loss_arousal 0.6714
+Time 18:46	Batch Time 0.47	 Epoch [1]([1054/5450])	 loss 1.7217	loss_EXPR 0.2834	loss_AU 0.2512	loss_valence 0.6009	loss_arousal 0.5862
+Time 18:50	Batch Time 0.47	 Epoch [1]([1578/5450])	 loss 1.5359	loss_EXPR 0.2368	loss_AU 0.1780	loss_valence 0.5464	loss_arousal 0.5747
+Time 18:54	Batch Time 0.45	 Epoch [1]([2102/5450])	 loss 1.4132	loss_EXPR 0.2356	loss_AU 0.1650	loss_valence 0.5038	loss_arousal 0.5089
+Time 18:58	Batch Time 0.47	 Epoch [1]([2627/5450])	 loss 1.2757	loss_EXPR 0.2012	loss_AU 0.1622	loss_valence 0.4524	loss_arousal 0.4600
+Time 19:02	Batch Time 0.46	 Epoch [1]([3150/5450])	 loss 1.2036	loss_EXPR 0.1931	loss_AU 0.1702	loss_valence 0.4019	loss_arousal 0.4384
+Time 19:06	Batch Time 0.45	 Epoch [1]([3678/5450])	 loss 1.1346	loss_EXPR 0.2029	loss_AU 0.1599	loss_valence 0.3737	loss_arousal 0.3981
+Time 19:10	Batch Time 0.48	 Epoch [1]([4199/5450])	 loss 1.0870	loss_EXPR 0.1844	loss_AU 0.1502	loss_valence 0.3881	loss_arousal 0.3643
+Time 19:14	Batch Time 0.47	 Epoch [1]([4720/5450])	 loss 1.1012	loss_EXPR 0.1843	loss_AU 0.1481	loss_valence 0.3921	loss_arousal 0.3767
+Time 19:19	Batch Time 0.45	 Epoch [1]([5242/5450])	 loss 1.1229	loss_EXPR 0.1540	loss_AU 0.1473	loss_valence 0.4269	loss_arousal 0.3947
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1664/1664 [02:25<00:00, 11.42it/s]
+EXPR Validation 19:20: Epoch [1] Step [1395200] loss 1.5734 Eval_0 0.3100 Eval_1 0.4059
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 350/350 [00:30<00:00, 11.32it/s]
+/home/mvu/.local/lib/python3.7/site-packages/sklearn/metrics/classification.py:1135: UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 due to no predicted samples.
+  'precision', 'predicted', average, warn_for)
+AU Validation 19:20: Epoch [1] Step [1395200] loss 1.4619 Eval_0 0.1849 Eval_1 0.9436
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1765/1765 [02:29<00:00, 11.83it/s]
+VA Validation 19:20: Epoch [1] Step [1395200] loss nan Eval_0 0.3508 Eval_1 0.4629
+Validation Performance:
+EXPR Metric: 0.3416   AU Metric: 0.5643   valence Metric: 0.3508   arousal Metric: 0.4629
+validation acc improved, from 0.0000 to 1.7196
+saving the model at the end of epoch 1, steps 1395200
+saved net: ./checkpoints/image_size_112_n_students_5_pretrained/net_epoch_student_1_id_resnet50.pth
+End of epoch 1 / 3 	 Time Taken: 2834 sec (47 min or 0 h)
+current learning rate: [0.0001]
+Time 19:26	Batch Time 0.40	 Epoch [2]([0/5450])	 loss 1.1996	loss_EXPR 0.2031	loss_AU 0.1626	loss_valence 0.4080	loss_arousal 0.4260
+Time 19:30	Batch Time 0.45	 Epoch [2]([519/5450])	 loss 1.0433	loss_EXPR 0.1546	loss_AU 0.1484	loss_valence 0.3692	loss_arousal 0.3712
+Time 19:34	Batch Time 0.45	 Epoch [2]([1043/5450])	 loss 1.0176	loss_EXPR 0.1796	loss_AU 0.1435	loss_valence 0.3436	loss_arousal 0.3509
+Time 19:38	Batch Time 0.46	 Epoch [2]([1565/5450])	 loss 1.0273	loss_EXPR 0.1836	loss_AU 0.1480	loss_valence 0.3412	loss_arousal 0.3545
+Time 19:42	Batch Time 0.47	 Epoch [2]([2086/5450])	 loss 1.0764	loss_EXPR 0.1661	loss_AU 0.1517	loss_valence 0.3497	loss_arousal 0.4088
+Time 19:46	Batch Time 0.45	 Epoch [2]([2605/5450])	 loss 1.0849	loss_EXPR 0.2120	loss_AU 0.1596	loss_valence 0.3440	loss_arousal 0.3693
+Time 19:50	Batch Time 0.45	 Epoch [2]([3125/5450])	 loss 1.0402	loss_EXPR 0.1731	loss_AU 0.1477	loss_valence 0.3755	loss_arousal 0.3438
+Time 19:54	Batch Time 0.47	 Epoch [2]([3644/5450])	 loss 1.0588	loss_EXPR 0.1716	loss_AU 0.1447	loss_valence 0.3652	loss_arousal 0.3773
+Time 19:58	Batch Time 0.45	 Epoch [2]([4161/5450])	 loss 1.0494	loss_EXPR 0.2020	loss_AU 0.1450	loss_valence 0.3343	loss_arousal 0.3681
+Time 20:02	Batch Time 0.45	 Epoch [2]([4680/5450])	 loss 1.0581	loss_EXPR 0.2164	loss_AU 0.1360	loss_valence 0.3328	loss_arousal 0.3729
+Time 20:06	Batch Time 0.45	 Epoch [2]([5200/5450])	 loss 0.9576	loss_EXPR 0.1937	loss_AU 0.1458	loss_valence 0.3093	loss_arousal 0.3088
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1664/1664 [02:25<00:00, 11.41it/s]
+EXPR Validation 20:08: Epoch [2] Step [1744000] loss 1.5056 Eval_0 0.3197 Eval_1 0.4286
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 350/350 [00:31<00:00, 11.21it/s]
+/home/mvu/.local/lib/python3.7/site-packages/sklearn/metrics/classification.py:1135: UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 due to no predicted samples.
+  'precision', 'predicted', average, warn_for)
+AU Validation 20:08: Epoch [2] Step [1744000] loss 1.4557 Eval_0 0.1704 Eval_1 0.9430
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1765/1765 [02:32<00:00, 11.56it/s]
+VA Validation 20:08: Epoch [2] Step [1744000] loss nan Eval_0 0.3508 Eval_1 0.4739
+Validation Performance:
+EXPR Metric: 0.3556   AU Metric: 0.5567   valence Metric: 0.3508   arousal Metric: 0.4739
+validation acc improved, from 1.7196 to 1.7371
+saving the model at the end of epoch 2, steps 1744000
+saved net: ./checkpoints/image_size_112_n_students_5_pretrained/net_epoch_student_1_id_resnet50.pth
+End of epoch 2 / 3 	 Time Taken: 2857 sec (47 min or 0 h)
+current learning rate: [0.0001]
+Time 20:13	Batch Time 0.43	 Epoch [3]([0/5450])	 loss 0.9238	loss_EXPR 0.1493	loss_AU 0.1485	loss_valence 0.3151	loss_arousal 0.3108
+Time 20:17	Batch Time 0.45	 Epoch [3]([520/5450])	 loss 1.0028	loss_EXPR 0.1529	loss_AU 0.1566	loss_valence 0.3433	loss_arousal 0.3500
+Time 20:21	Batch Time 0.45	 Epoch [3]([1039/5450])	 loss 0.9139	loss_EXPR 0.1698	loss_AU 0.1481	loss_valence 0.2679	loss_arousal 0.3280
+Time 20:25	Batch Time 0.45	 Epoch [3]([1559/5450])	 loss 0.8724	loss_EXPR 0.1398	loss_AU 0.1396	loss_valence 0.2918	loss_arousal 0.3012
+Time 20:29	Batch Time 0.45	 Epoch [3]([2077/5450])	 loss 0.8837	loss_EXPR 0.1491	loss_AU 0.1421	loss_valence 0.2769	loss_arousal 0.3156
+Time 20:33	Batch Time 0.45	 Epoch [3]([2598/5450])	 loss 0.9655	loss_EXPR 0.2019	loss_AU 0.1399	loss_valence 0.2917	loss_arousal 0.3320
+Time 20:37	Batch Time 0.45	 Epoch [3]([3122/5450])	 loss 1.0420	loss_EXPR 0.1672	loss_AU 0.1469	loss_valence 0.3791	loss_arousal 0.3487
+Time 20:41	Batch Time 0.45	 Epoch [3]([3640/5450])	 loss 0.9464	loss_EXPR 0.1364	loss_AU 0.1440	loss_valence 0.3259	loss_arousal 0.3400
+Time 20:45	Batch Time 0.45	 Epoch [3]([4157/5450])	 loss 0.9009	loss_EXPR 0.1422	loss_AU 0.1472	loss_valence 0.2980	loss_arousal 0.3134
+Time 20:49	Batch Time 0.45	 Epoch [3]([4675/5450])	 loss 0.8874	loss_EXPR 0.1535	loss_AU 0.1510	loss_valence 0.2828	loss_arousal 0.3002
+Time 20:53	Batch Time 0.46	 Epoch [3]([5190/5450])	 loss 0.8536	loss_EXPR 0.1650	loss_AU 0.1469	loss_valence 0.2517	loss_arousal 0.2899
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1664/1664 [02:23<00:00, 11.57it/s]
+EXPR Validation 20:55: Epoch [3] Step [2092800] loss 1.4597 Eval_0 0.3247 Eval_1 0.4455
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 350/350 [00:30<00:00, 11.32it/s]
+/home/mvu/.local/lib/python3.7/site-packages/sklearn/metrics/classification.py:1135: UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 due to no predicted samples.
+  'precision', 'predicted', average, warn_for)
+AU Validation 20:55: Epoch [3] Step [2092800] loss 1.4137 Eval_0 0.1795 Eval_1 0.9456
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1765/1765 [02:34<00:00, 11.41it/s]
+VA Validation 20:55: Epoch [3] Step [2092800] loss nan Eval_0 0.3395 Eval_1 0.4874
+Validation Performance:
+EXPR Metric: 0.3646   AU Metric: 0.5626   valence Metric: 0.3395   arousal Metric: 0.4874
+validation acc improved, from 1.7371 to 1.7541
+saving the model at the end of epoch 3, steps 2092800
+saved net: ./checkpoints/image_size_112_n_students_5_pretrained/net_epoch_student_1_id_resnet50.pth
+End of epoch 3 / 3 	 Time Taken: 2863 sec (47 min or 0 h)
+Model ResNet50 was created
+current learning rate: [0.0001]
+Time 21:01	Batch Time 0.41	 Epoch [1]([0/5450])	 loss 4.8324	loss_EXPR 1.0003	loss_AU 0.7396	loss_valence 1.5613	loss_arousal 1.5312
+Time 21:05	Batch Time 0.45	 Epoch [1]([515/5450])	 loss 2.1439	loss_EXPR 0.3635	loss_AU 0.4551	loss_valence 0.6850	loss_arousal 0.6404
+Time 21:09	Batch Time 0.47	 Epoch [1]([1033/5450])	 loss 1.5686	loss_EXPR 0.2446	loss_AU 0.2603	loss_valence 0.5259	loss_arousal 0.5378
+Time 21:13	Batch Time 0.45	 Epoch [1]([1550/5450])	 loss 1.4495	loss_EXPR 0.2192	loss_AU 0.1848	loss_valence 0.5405	loss_arousal 0.5051
+Time 21:17	Batch Time 0.47	 Epoch [1]([2065/5450])	 loss 1.4029	loss_EXPR 0.2695	loss_AU 0.1772	loss_valence 0.4618	loss_arousal 0.4944
+Time 21:21	Batch Time 0.45	 Epoch [1]([2585/5450])	 loss 1.2012	loss_EXPR 0.2165	loss_AU 0.1604	loss_valence 0.4026	loss_arousal 0.4217
+Time 21:25	Batch Time 0.47	 Epoch [1]([3102/5450])	 loss 1.1706	loss_EXPR 0.1917	loss_AU 0.1691	loss_valence 0.4064	loss_arousal 0.4034
+Time 21:29	Batch Time 0.45	 Epoch [1]([3619/5450])	 loss 1.1696	loss_EXPR 0.1941	loss_AU 0.1622	loss_valence 0.4051	loss_arousal 0.4083
+Time 21:33	Batch Time 0.47	 Epoch [1]([4137/5450])	 loss 1.1659	loss_EXPR 0.1866	loss_AU 0.1546	loss_valence 0.4276	loss_arousal 0.3971
+Time 21:37	Batch Time 0.45	 Epoch [1]([4656/5450])	 loss 1.2131	loss_EXPR 0.1838	loss_AU 0.1635	loss_valence 0.4450	loss_arousal 0.4209
+Time 21:41	Batch Time 0.45	 Epoch [1]([5175/5450])	 loss 1.1114	loss_EXPR 0.1764	loss_AU 0.1611	loss_valence 0.3834	loss_arousal 0.3905
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1664/1664 [02:27<00:00, 11.28it/s]
+EXPR Validation 21:43: Epoch [1] Step [2441600] loss 1.5004 Eval_0 0.3283 Eval_1 0.4352
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 350/350 [00:31<00:00, 11.21it/s]
+/home/mvu/.local/lib/python3.7/site-packages/sklearn/metrics/classification.py:1135: UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 due to no predicted samples.
+  'precision', 'predicted', average, warn_for)
+AU Validation 21:43: Epoch [1] Step [2441600] loss 1.3439 Eval_0 0.1817 Eval_1 0.9444
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1765/1765 [02:32<00:00, 11.57it/s]
+VA Validation 21:43: Epoch [1] Step [2441600] loss nan Eval_0 0.3450 Eval_1 0.4272
+Validation Performance:
+EXPR Metric: 0.3636   AU Metric: 0.5631   valence Metric: 0.3450   arousal Metric: 0.4272
+validation acc improved, from 0.0000 to 1.6988
+saving the model at the end of epoch 1, steps 2441600
+saved net: ./checkpoints/image_size_112_n_students_5_pretrained/net_epoch_student_2_id_resnet50.pth
+End of epoch 1 / 3 	 Time Taken: 2870 sec (47 min or 0 h)
+current learning rate: [0.0001]
+Time 21:49	Batch Time 0.40	 Epoch [2]([0/5450])	 loss 1.0742	loss_EXPR 0.1946	loss_AU 0.1439	loss_valence 0.3466	loss_arousal 0.3890
+Time 21:53	Batch Time 0.45	 Epoch [2]([517/5450])	 loss 1.0727	loss_EXPR 0.1884	loss_AU 0.1560	loss_valence 0.3582	loss_arousal 0.3700
+Time 21:57	Batch Time 0.45	 Epoch [2]([1038/5450])	 loss 1.0377	loss_EXPR 0.1803	loss_AU 0.1531	loss_valence 0.3716	loss_arousal 0.3326
+Time 22:01	Batch Time 0.45	 Epoch [2]([1562/5450])	 loss 1.0754	loss_EXPR 0.1903	loss_AU 0.1583	loss_valence 0.3643	loss_arousal 0.3625
+Time 22:05	Batch Time 0.45	 Epoch [2]([2077/5450])	 loss 1.1421	loss_EXPR 0.1930	loss_AU 0.1408	loss_valence 0.3888	loss_arousal 0.4195
+Time 22:09	Batch Time 0.45	 Epoch [2]([2594/5450])	 loss 0.9524	loss_EXPR 0.1524	loss_AU 0.1389	loss_valence 0.3208	loss_arousal 0.3403
+Time 22:13	Batch Time 0.45	 Epoch [2]([3110/5450])	 loss 1.0840	loss_EXPR 0.1777	loss_AU 0.1622	loss_valence 0.3754	loss_arousal 0.3687
+Time 22:17	Batch Time 0.46	 Epoch [2]([3630/5450])	 loss 0.9294	loss_EXPR 0.1492	loss_AU 0.1316	loss_valence 0.3329	loss_arousal 0.3157
+Time 22:21	Batch Time 0.50	 Epoch [2]([4148/5450])	 loss 0.9755	loss_EXPR 0.1480	loss_AU 0.1447	loss_valence 0.3257	loss_arousal 0.3570
+Time 22:25	Batch Time 0.45	 Epoch [2]([4672/5450])	 loss 0.9513	loss_EXPR 0.1518	loss_AU 0.1400	loss_valence 0.3287	loss_arousal 0.3308
+Time 22:29	Batch Time 0.46	 Epoch [2]([5190/5450])	 loss 0.9030	loss_EXPR 0.1416	loss_AU 0.1409	loss_valence 0.2842	loss_arousal 0.3363
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1664/1664 [02:21<00:00, 11.73it/s]
+EXPR Validation 22:31: Epoch [2] Step [2790400] loss 1.4154 Eval_0 0.3324 Eval_1 0.4485
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 350/350 [00:30<00:00, 11.34it/s]
+/home/mvu/.local/lib/python3.7/site-packages/sklearn/metrics/classification.py:1135: UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 due to no predicted samples.
+  'precision', 'predicted', average, warn_for)
+AU Validation 22:31: Epoch [2] Step [2790400] loss 1.3549 Eval_0 0.1919 Eval_1 0.9451
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1765/1765 [02:38<00:00, 11.14it/s]
+VA Validation 22:31: Epoch [2] Step [2790400] loss nan Eval_0 0.3479 Eval_1 0.4870
+Validation Performance:
+EXPR Metric: 0.3707   AU Metric: 0.5685   valence Metric: 0.3479   arousal Metric: 0.4870
+validation acc improved, from 1.6988 to 1.7742
+saving the model at the end of epoch 2, steps 2790400
+saved net: ./checkpoints/image_size_112_n_students_5_pretrained/net_epoch_student_2_id_resnet50.pth
+End of epoch 2 / 3 	 Time Taken: 2865 sec (47 min or 0 h)
+current learning rate: [0.0001]
+Time 22:37	Batch Time 0.41	 Epoch [3]([0/5450])	 loss 1.0171	loss_EXPR 0.1455	loss_AU 0.1427	loss_valence 0.3751	loss_arousal 0.3538
+Time 22:41	Batch Time 0.45	 Epoch [3]([520/5450])	 loss 0.9444	loss_EXPR 0.1529	loss_AU 0.1440	loss_valence 0.3399	loss_arousal 0.3076
+Time 22:45	Batch Time 0.47	 Epoch [3]([1041/5450])	 loss 1.0135	loss_EXPR 0.1803	loss_AU 0.1401	loss_valence 0.3278	loss_arousal 0.3654
+Time 22:49	Batch Time 0.46	 Epoch [3]([1562/5450])	 loss 0.9754	loss_EXPR 0.1886	loss_AU 0.1472	loss_valence 0.3067	loss_arousal 0.3329
+Time 22:53	Batch Time 0.47	 Epoch [3]([2081/5450])	 loss 0.9178	loss_EXPR 0.1604	loss_AU 0.1437	loss_valence 0.2953	loss_arousal 0.3184
+Time 22:57	Batch Time 0.45	 Epoch [3]([2601/5450])	 loss 1.0382	loss_EXPR 0.1882	loss_AU 0.1424	loss_valence 0.3621	loss_arousal 0.3455
+Time 23:01	Batch Time 0.44	 Epoch [3]([3124/5450])	 loss 0.8155	loss_EXPR 0.1480	loss_AU 0.1332	loss_valence 0.2598	loss_arousal 0.2746
+Time 23:05	Batch Time 0.46	 Epoch [3]([3641/5450])	 loss 0.9271	loss_EXPR 0.1488	loss_AU 0.1276	loss_valence 0.3350	loss_arousal 0.3157
+Time 23:09	Batch Time 0.45	 Epoch [3]([4160/5450])	 loss 0.9739	loss_EXPR 0.1691	loss_AU 0.1483	loss_valence 0.3261	loss_arousal 0.3304
+Time 23:13	Batch Time 0.45	 Epoch [3]([4675/5450])	 loss 0.8394	loss_EXPR 0.1270	loss_AU 0.1354	loss_valence 0.2818	loss_arousal 0.2952
+Time 23:17	Batch Time 0.45	 Epoch [3]([5194/5450])	 loss 0.9080	loss_EXPR 0.1354	loss_AU 0.1518	loss_valence 0.3245	loss_arousal 0.2962
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1664/1664 [02:21<00:00, 11.74it/s]
+EXPR Validation 23:19: Epoch [3] Step [3139200] loss 1.4519 Eval_0 0.3365 Eval_1 0.4477
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 350/350 [00:31<00:00, 11.17it/s]
+/home/mvu/.local/lib/python3.7/site-packages/sklearn/metrics/classification.py:1135: UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 due to no predicted samples.
+  'precision', 'predicted', average, warn_for)
+AU Validation 23:19: Epoch [3] Step [3139200] loss 1.3717 Eval_0 0.1800 Eval_1 0.9448
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1765/1765 [02:34<00:00, 11.40it/s]
+VA Validation 23:19: Epoch [3] Step [3139200] loss nan Eval_0 0.3611 Eval_1 0.4724
+Validation Performance:
+EXPR Metric: 0.3732   AU Metric: 0.5624   valence Metric: 0.3611   arousal Metric: 0.4724
+End of epoch 3 / 3 	 Time Taken: 2858 sec (47 min or 0 h)
+Model ResNet50 was created
+current learning rate: [0.0001]
+Time 23:24	Batch Time 0.39	 Epoch [1]([0/5450])	 loss 4.7369	loss_EXPR 0.9283	loss_AU 0.7337	loss_valence 1.5522	loss_arousal 1.5228
+Time 23:28	Batch Time 0.46	 Epoch [1]([520/5450])	 loss 2.0172	loss_EXPR 0.2665	loss_AU 0.4507	loss_valence 0.6145	loss_arousal 0.6854
+
+
+Time 23:32	Batch Time 0.45	 Epoch [1]([1039/5450])	 loss 1.5812	loss_EXPR 0.2633	loss_AU 0.2527	loss_valence 0.5261	loss_arousal 0.5392
+Time 23:36	Batch Time 0.45	 Epoch [1]([1557/5450])	 loss 1.3859	loss_EXPR 0.2337	loss_AU 0.1869	loss_valence 0.5034	loss_arousal 0.4619
+Time 23:40	Batch Time 0.47	 Epoch [1]([2076/5450])	 loss 1.4215	loss_EXPR 0.2606	loss_AU 0.1663	loss_valence 0.4798	loss_arousal 0.5149
+Time 23:44	Batch Time 0.47	 Epoch [1]([2595/5450])	 loss 1.2488	loss_EXPR 0.2233	loss_AU 0.1621	loss_valence 0.4232	loss_arousal 0.4402
+Time 23:48	Batch Time 0.45	 Epoch [1]([3115/5450])	 loss 1.3339	loss_EXPR 0.2795	loss_AU 0.1646	loss_valence 0.4571	loss_arousal 0.4326
+Time 23:52	Batch Time 0.47	 Epoch [1]([3633/5450])	 loss 1.2161	loss_EXPR 0.2308	loss_AU 0.1493	loss_valence 0.4194	loss_arousal 0.4166
+Time 23:56	Batch Time 0.45	 Epoch [1]([4151/5450])	 loss 1.1249	loss_EXPR 0.1583	loss_AU 0.1570	loss_valence 0.3967	loss_arousal 0.4129
+Time 00:00	Batch Time 0.45	 Epoch [1]([4668/5450])	 loss 1.0728	loss_EXPR 0.1587	loss_AU 0.1496	loss_valence 0.3731	loss_arousal 0.3914
+Time 00:04	Batch Time 0.44	 Epoch [1]([5203/5450])	 loss 1.1912	loss_EXPR 0.1834	loss_AU 0.1560	loss_valence 0.3829	loss_arousal 0.4690
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1664/1664 [01:46<00:00, 15.59it/s]
+EXPR Validation 00:06: Epoch [1] Step [3488000] loss 1.5237 Eval_0 0.3253 Eval_1 0.4274
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 350/350 [00:22<00:00, 15.32it/s]
+/home/mvu/.local/lib/python3.7/site-packages/sklearn/metrics/classification.py:1135: UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 due to no predicted samples.
+  'precision', 'predicted', average, warn_for)
+AU Validation 00:06: Epoch [1] Step [3488000] loss 1.4234 Eval_0 0.1932 Eval_1 0.9463
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1765/1765 [01:55<00:00, 15.26it/s]
+VA Validation 00:06: Epoch [1] Step [3488000] loss nan Eval_0 0.3524 Eval_1 0.4768
+Validation Performance:
+EXPR Metric: 0.3590   AU Metric: 0.5697   valence Metric: 0.3524   arousal Metric: 0.4768
+validation acc improved, from 0.0000 to 1.7580
+saving the model at the end of epoch 1, steps 3488000
+saved net: ./checkpoints/image_size_112_n_students_5_pretrained/net_epoch_student_3_id_resnet50.pth
+End of epoch 1 / 3 	 Time Taken: 2767 sec (46 min or 0 h)
+current learning rate: [0.0001]
+Time 00:10	Batch Time 0.40	 Epoch [2]([0/5450])	 loss 1.1854	loss_EXPR 0.1994	loss_AU 0.1656	loss_valence 0.3938	loss_arousal 0.4265
+Time 00:14	Batch Time 0.44	 Epoch [2]([537/5450])	 loss 1.0441	loss_EXPR 0.1618	loss_AU 0.1483	loss_valence 0.3421	loss_arousal 0.3918
+Time 00:18	Batch Time 0.44	 Epoch [2]([1075/5450])	 loss 1.1572	loss_EXPR 0.1704	loss_AU 0.1535	loss_valence 0.4367	loss_arousal 0.3966
+Time 00:22	Batch Time 0.44	 Epoch [2]([1613/5450])	 loss 1.0849	loss_EXPR 0.1861	loss_AU 0.1529	loss_valence 0.3572	loss_arousal 0.3887
+Time 00:26	Batch Time 0.44	 Epoch [2]([2151/5450])	 loss 1.0598	loss_EXPR 0.1685	loss_AU 0.1441	loss_valence 0.3428	loss_arousal 0.4044
+Time 00:30	Batch Time 0.44	 Epoch [2]([2689/5450])	 loss 0.9875	loss_EXPR 0.1495	loss_AU 0.1503	loss_valence 0.3572	loss_arousal 0.3305
+Time 00:34	Batch Time 0.44	 Epoch [2]([3227/5450])	 loss 1.0106	loss_EXPR 0.1490	loss_AU 0.1363	loss_valence 0.3527	loss_arousal 0.3726
+Time 00:38	Batch Time 0.44	 Epoch [2]([3765/5450])	 loss 0.8715	loss_EXPR 0.1458	loss_AU 0.1463	loss_valence 0.2864	loss_arousal 0.2930
+Time 00:42	Batch Time 0.44	 Epoch [2]([4304/5450])	 loss 0.9189	loss_EXPR 0.1724	loss_AU 0.1381	loss_valence 0.3141	loss_arousal 0.2944
+Time 00:46	Batch Time 0.44	 Epoch [2]([4842/5450])	 loss 0.9919	loss_EXPR 0.1777	loss_AU 0.1552	loss_valence 0.3203	loss_arousal 0.3387
+Time 00:50	Batch Time 0.44	 Epoch [2]([5381/5450])	 loss 1.0165	loss_EXPR 0.1398	loss_AU 0.1463	loss_valence 0.3731	loss_arousal 0.3574
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1664/1664 [01:46<00:00, 15.58it/s]
+EXPR Validation 00:51: Epoch [2] Step [3836800] loss 1.6139 Eval_0 0.3111 Eval_1 0.3829
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 350/350 [00:22<00:00, 15.39it/s]
+/home/mvu/.local/lib/python3.7/site-packages/sklearn/metrics/classification.py:1135: UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 due to no predicted samples.
+  'precision', 'predicted', average, warn_for)
+AU Validation 00:51: Epoch [2] Step [3836800] loss 1.3619 Eval_0 0.1924 Eval_1 0.9453
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1765/1765 [01:55<00:00, 15.24it/s]
+VA Validation 00:51: Epoch [2] Step [3836800] loss nan Eval_0 0.3341 Eval_1 0.4607
+Validation Performance:
+EXPR Metric: 0.3348   AU Metric: 0.5688   valence Metric: 0.3341   arousal Metric: 0.4607
+/data2/mvu/phd_experiments/Multitask-CNN/utils/logging_utils.py:7: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`).
+  plt.figure()
+End of epoch 2 / 3 	 Time Taken: 2688 sec (44 min or 0 h)
+current learning rate: [0.0001]
+Time 00:55	Batch Time 0.40	 Epoch [3]([0/5450])	 loss 0.9881	loss_EXPR 0.1862	loss_AU 0.1431	loss_valence 0.3060	loss_arousal 0.3528
+Time 00:59	Batch Time 0.44	 Epoch [3]([537/5450])	 loss 0.9392	loss_EXPR 0.1601	loss_AU 0.1484	loss_valence 0.3153	loss_arousal 0.3153
+Time 01:03	Batch Time 0.44	 Epoch [3]([1075/5450])	 loss 0.9492	loss_EXPR 0.1658	loss_AU 0.1465	loss_valence 0.3165	loss_arousal 0.3204
+Time 01:07	Batch Time 0.44	 Epoch [3]([1613/5450])	 loss 0.8993	loss_EXPR 0.1507	loss_AU 0.1281	loss_valence 0.3417	loss_arousal 0.2789
+Time 01:11	Batch Time 0.44	 Epoch [3]([2150/5450])	 loss 0.9892	loss_EXPR 0.1629	loss_AU 0.1400	loss_valence 0.3415	loss_arousal 0.3448
+Time 01:15	Batch Time 0.44	 Epoch [3]([2688/5450])	 loss 0.8834	loss_EXPR 0.1668	loss_AU 0.1471	loss_valence 0.2890	loss_arousal 0.2805
+Time 01:19	Batch Time 0.44	 Epoch [3]([3225/5450])	 loss 0.9104	loss_EXPR 0.1640	loss_AU 0.1408	loss_valence 0.2976	loss_arousal 0.3080
+Time 01:23	Batch Time 0.44	 Epoch [3]([3763/5450])	 loss 0.9106	loss_EXPR 0.1656	loss_AU 0.1353	loss_valence 0.3149	loss_arousal 0.2947
+Time 01:27	Batch Time 0.44	 Epoch [3]([4301/5450])	 loss 0.9013	loss_EXPR 0.1717	loss_AU 0.1351	loss_valence 0.2854	loss_arousal 0.3090
+Time 01:31	Batch Time 0.44	 Epoch [3]([4839/5450])	 loss 0.8605	loss_EXPR 0.1291	loss_AU 0.1432	loss_valence 0.2858	loss_arousal 0.3025
+Time 01:35	Batch Time 0.44	 Epoch [3]([5376/5450])	 loss 0.8842	loss_EXPR 0.1179	loss_AU 0.1311	loss_valence 0.3058	loss_arousal 0.3295
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1664/1664 [01:47<00:00, 15.48it/s]
+EXPR Validation 01:36: Epoch [3] Step [4185600] loss 1.5751 Eval_0 0.3159 Eval_1 0.3977
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 350/350 [00:22<00:00, 15.42it/s]
+/home/mvu/.local/lib/python3.7/site-packages/sklearn/metrics/classification.py:1135: UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 due to no predicted samples.
+  'precision', 'predicted', average, warn_for)
+AU Validation 01:36: Epoch [3] Step [4185600] loss 1.4503 Eval_0 0.1872 Eval_1 0.9462
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1765/1765 [01:55<00:00, 15.25it/s]
+VA Validation 01:36: Epoch [3] Step [4185600] loss nan Eval_0 0.3536 Eval_1 0.4891
+Validation Performance:
+EXPR Metric: 0.3429   AU Metric: 0.5667   valence Metric: 0.3536   arousal Metric: 0.4891
+End of epoch 3 / 3 	 Time Taken: 2690 sec (44 min or 0 h)
+Model ResNet50 was created
+current learning rate: [0.0001]
+Time 01:40	Batch Time 0.38	 Epoch [1]([0/5450])	 loss 4.8465	loss_EXPR 0.9847	loss_AU 0.7317	loss_valence 1.6152	loss_arousal 1.5149
+Time 01:44	Batch Time 0.44	 Epoch [1]([542/5450])	 loss 1.9375	loss_EXPR 0.3124	loss_AU 0.4202	loss_valence 0.5576	loss_arousal 0.6473
+Time 01:48	Batch Time 0.44	 Epoch [1]([1084/5450])	 loss 1.5852	loss_EXPR 0.2537	loss_AU 0.2539	loss_valence 0.5257	loss_arousal 0.5519
+Time 01:52	Batch Time 0.44	 Epoch [1]([1626/5450])	 loss 1.5343	loss_EXPR 0.2673	loss_AU 0.1919	loss_valence 0.5697	loss_arousal 0.5054
+Time 01:56	Batch Time 0.44	 Epoch [1]([2169/5450])	 loss 1.3397	loss_EXPR 0.2410	loss_AU 0.1849	loss_valence 0.4670	loss_arousal 0.4468
+Time 02:00	Batch Time 0.44	 Epoch [1]([2711/5450])	 loss 1.2752	loss_EXPR 0.2251	loss_AU 0.1734	loss_valence 0.4341	loss_arousal 0.4426
+Time 02:04	Batch Time 0.44	 Epoch [1]([3253/5450])	 loss 1.2817	loss_EXPR 0.2253	loss_AU 0.1714	loss_valence 0.4534	loss_arousal 0.4317
+Time 02:08	Batch Time 0.44	 Epoch [1]([3795/5450])	 loss 1.0876	loss_EXPR 0.1497	loss_AU 0.1600	loss_valence 0.3846	loss_arousal 0.3934
+Time 02:12	Batch Time 0.44	 Epoch [1]([4337/5450])	 loss 1.1195	loss_EXPR 0.1973	loss_AU 0.1641	loss_valence 0.3887	loss_arousal 0.3693
+Time 02:16	Batch Time 0.44	 Epoch [1]([4879/5450])	 loss 1.1447	loss_EXPR 0.1822	loss_AU 0.1450	loss_valence 0.4121	loss_arousal 0.4054
+Time 02:20	Batch Time 0.44	 Epoch [1]([5421/5450])	 loss 1.2235	loss_EXPR 0.2146	loss_AU 0.1522	loss_valence 0.4114	loss_arousal 0.4454
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1664/1664 [01:47<00:00, 15.55it/s]
+EXPR Validation 02:20: Epoch [1] Step [4534400] loss 1.5081 Eval_0 0.3302 Eval_1 0.4132
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 350/350 [00:22<00:00, 15.38it/s]
+/home/mvu/.local/lib/python3.7/site-packages/sklearn/metrics/classification.py:1135: UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 due to no predicted samples.
+  'precision', 'predicted', average, warn_for)
+AU Validation 02:20: Epoch [1] Step [4534400] loss 1.3698 Eval_0 0.1763 Eval_1 0.9435
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1765/1765 [01:56<00:00, 15.21it/s]
+VA Validation 02:20: Epoch [1] Step [4534400] loss nan Eval_0 0.3119 Eval_1 0.4671
+Validation Performance:
+EXPR Metric: 0.3576   AU Metric: 0.5599   valence Metric: 0.3119   arousal Metric: 0.4671
+validation acc improved, from 0.0000 to 1.6965
+saving the model at the end of epoch 1, steps 4534400
+saved net: ./checkpoints/image_size_112_n_students_5_pretrained/net_epoch_student_4_id_resnet50.pth
+End of epoch 1 / 3 	 Time Taken: 2669 sec (44 min or 0 h)
+current learning rate: [0.0001]
+Time 02:25	Batch Time 0.39	 Epoch [2]([0/5450])	 loss 1.1282	loss_EXPR 0.1809	loss_AU 0.1519	loss_valence 0.4206	loss_arousal 0.3748
+Time 02:29	Batch Time 0.44	 Epoch [2]([542/5450])	 loss 1.0532	loss_EXPR 0.2001	loss_AU 0.1487	loss_valence 0.3441	loss_arousal 0.3602
+Time 02:33	Batch Time 0.44	 Epoch [2]([1085/5450])	 loss 1.0838	loss_EXPR 0.1792	loss_AU 0.1521	loss_valence 0.3824	loss_arousal 0.3702
+Time 02:37	Batch Time 0.44	 Epoch [2]([1628/5450])	 loss 1.1268	loss_EXPR 0.2000	loss_AU 0.1395	loss_valence 0.3690	loss_arousal 0.4183
+Time 02:41	Batch Time 0.44	 Epoch [2]([2171/5450])	 loss 1.1017	loss_EXPR 0.1799	loss_AU 0.1571	loss_valence 0.3754	loss_arousal 0.3892
+Time 02:45	Batch Time 0.44	 Epoch [2]([2713/5450])	 loss 1.0332	loss_EXPR 0.1650	loss_AU 0.1417	loss_valence 0.3536	loss_arousal 0.3730
+Time 02:49	Batch Time 0.44	 Epoch [2]([3256/5450])	 loss 1.0926	loss_EXPR 0.1799	loss_AU 0.1578	loss_valence 0.3647	loss_arousal 0.3902
+Time 02:53	Batch Time 0.44	 Epoch [2]([3799/5450])	 loss 0.9394	loss_EXPR 0.1427	loss_AU 0.1449	loss_valence 0.3289	loss_arousal 0.3229
+Time 02:57	Batch Time 0.44	 Epoch [2]([4342/5450])	 loss 1.0102	loss_EXPR 0.1844	loss_AU 0.1403	loss_valence 0.3376	loss_arousal 0.3480
+Time 03:01	Batch Time 0.44	 Epoch [2]([4885/5450])	 loss 0.9152	loss_EXPR 0.1526	loss_AU 0.1513	loss_valence 0.3192	loss_arousal 0.2921
+Time 03:05	Batch Time 0.44	 Epoch [2]([5428/5450])	 loss 1.0400	loss_EXPR 0.1697	loss_AU 0.1509	loss_valence 0.3534	loss_arousal 0.3661
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1664/1664 [01:47<00:00, 15.53it/s]
+EXPR Validation 03:05: Epoch [2] Step [4883200] loss 1.4996 Eval_0 0.3260 Eval_1 0.4228
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 350/350 [00:22<00:00, 15.46it/s]
+/home/mvu/.local/lib/python3.7/site-packages/sklearn/metrics/classification.py:1135: UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 due to no predicted samples.
+  'precision', 'predicted', average, warn_for)
+AU Validation 03:05: Epoch [2] Step [4883200] loss 1.4244 Eval_0 0.1779 Eval_1 0.9442
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1765/1765 [01:55<00:00, 15.24it/s]
+VA Validation 03:05: Epoch [2] Step [4883200] loss nan Eval_0 0.3405 Eval_1 0.4621
+Validation Performance:
+EXPR Metric: 0.3579   AU Metric: 0.5610   valence Metric: 0.3405   arousal Metric: 0.4621
+validation acc improved, from 1.6965 to 1.7216
+saving the model at the end of epoch 2, steps 4883200
+saved net: ./checkpoints/image_size_112_n_students_5_pretrained/net_epoch_student_4_id_resnet50.pth
+End of epoch 2 / 3 	 Time Taken: 2668 sec (44 min or 0 h)
+current learning rate: [0.0001]
+Time 03:09	Batch Time 0.39	 Epoch [3]([0/5450])	 loss 1.0499	loss_EXPR 0.1377	loss_AU 0.1524	loss_valence 0.3749	loss_arousal 0.3849
+Time 03:13	Batch Time 0.44	 Epoch [3]([543/5450])	 loss 0.9416	loss_EXPR 0.1638	loss_AU 0.1379	loss_valence 0.3188	loss_arousal 0.3210
+Time 03:17	Batch Time 0.44	 Epoch [3]([1086/5450])	 loss 1.0520	loss_EXPR 0.1937	loss_AU 0.1553	loss_valence 0.3451	loss_arousal 0.3579
+Time 03:21	Batch Time 0.44	 Epoch [3]([1628/5450])	 loss 0.9659	loss_EXPR 0.1496	loss_AU 0.1428	loss_valence 0.3308	loss_arousal 0.3427
+Time 03:25	Batch Time 0.44	 Epoch [3]([2170/5450])	 loss 0.9338	loss_EXPR 0.1489	loss_AU 0.1535	loss_valence 0.3150	loss_arousal 0.3164
+Time 03:29	Batch Time 0.44	 Epoch [3]([2712/5450])	 loss 0.9484	loss_EXPR 0.1633	loss_AU 0.1347	loss_valence 0.3213	loss_arousal 0.3292
+Time 03:33	Batch Time 0.44	 Epoch [3]([3254/5450])	 loss 0.9104	loss_EXPR 0.1756	loss_AU 0.1296	loss_valence 0.3031	loss_arousal 0.3022
+Time 03:37	Batch Time 0.44	 Epoch [3]([3797/5450])	 loss 0.9325	loss_EXPR 0.1559	loss_AU 0.1495	loss_valence 0.3197	loss_arousal 0.3074
+Time 03:41	Batch Time 0.44	 Epoch [3]([4340/5450])	 loss 0.8727	loss_EXPR 0.1530	loss_AU 0.1390	loss_valence 0.2810	loss_arousal 0.2998
+Time 03:45	Batch Time 0.44	 Epoch [3]([4883/5450])	 loss 0.9498	loss_EXPR 0.1965	loss_AU 0.1357	loss_valence 0.3023	loss_arousal 0.3153
+Time 03:49	Batch Time 0.44	 Epoch [3]([5426/5450])	 loss 0.8980	loss_EXPR 0.1240	loss_AU 0.1234	loss_valence 0.3222	loss_arousal 0.3283
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1664/1664 [01:47<00:00, 15.49it/s]
+EXPR Validation 03:49: Epoch [3] Step [5232000] loss 1.4319 Eval_0 0.3224 Eval_1 0.4423
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 350/350 [00:22<00:00, 15.35it/s]
+/home/mvu/.local/lib/python3.7/site-packages/sklearn/metrics/classification.py:1135: UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 due to no predicted samples.
+  'precision', 'predicted', average, warn_for)
+AU Validation 03:49: Epoch [3] Step [5232000] loss 1.3509 Eval_0 0.1886 Eval_1 0.9451
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1765/1765 [01:55<00:00, 15.23it/s]
+VA Validation 03:49: Epoch [3] Step [5232000] loss nan Eval_0 0.3543 Eval_1 0.4591
+Validation Performance:
+EXPR Metric: 0.3620   AU Metric: 0.5668   valence Metric: 0.3543   arousal Metric: 0.4591
+validation acc improved, from 1.7216 to 1.7422
+saving the model at the end of epoch 3, steps 5232000
+saved net: ./checkpoints/image_size_112_n_students_5_pretrained/net_epoch_student_4_id_resnet50.pth
+End of epoch 3 / 3 	 Time Taken: 2669 sec (44 min or 0 h)
+
+
+
+
+
+
+-----------------------------------------------------
+Evaluation
+
+-----------------------------------------------------
+
+python3.7 val.py --name image_size_112_n_students_5_pretrained --image_size 112 --teacher_model_path /home/mvu/Documents/pretrained/FG2020-ABAW/Multitask-CNN/net_epoch_teacher_id_resnet50.pth --mode Validation --ensemble --batch_size 64
+------------ Options -------------
+AU_criterion: BCE
+AU_label_size: 8
+EXPR_criterion: CE
+EXPR_label_size: 7
+VA_criterion: CCC_CE
+VA_label_size: 2
+batch_size: 64
+checkpoints_dir: ./checkpoints
+dataset_names: ['Mixed_EXPR', 'Mixed_AU', 'Mixed_VA']
+digitize_num: 20
+ensemble: True
+eval_with_teacher: False
+force_balance: False
+gpu_ids: [0]
+hidden_size: 128
+image_size: 112
+is_train: False
+lambda_A: 1.0
+lambda_AU: 8.0
+lambda_EXPR: 1.0
+lambda_V: 1.0
+lambda_ccc: 1.0
+lambda_teacher: 0.4
+load_epoch: 0
+loggings_dir: ./loggings
+mode: Validation
+model_name: resnet50
+n_students: 5
+n_threads_test: 8
+n_threads_train: 8
+name: image_size_112_n_students_5_pretrained
+pretrained_dataset: ferplus
+pretrained_teacher_model:
+save_dir: Predictions
+tasks: ['EXPR', 'AU', 'VA']
+teacher_model_path: /home/mvu/Documents/pretrained/FG2020-ABAW/Multitask-CNN/net_epoch_teacher_id_resnet50.pth
+temperature: 1.5
+-------------- End ----------------
+./checkpoints/image_size_112_n_students_5_pretrained
+Model ResNet50 was created
+Dataset dataset_Mixed_EXPR was created
+Dataset dataset_Mixed_AU was created
+Dataset dataset_Mixed_VA was created
+Validation sets
+EXPR: 319488 images
+AU: 67200 images
+VA: 338880 images
+Evaluation: 5 models
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1664/1664 [03:15<00:00,  8.51it/s]
+Model id 0 EXPR Validation 08:21: Eval_0 0.3135 Eval_1 0.4292 eval_res 0.3517
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 350/350 [00:41<00:00,  8.41it/s]
+/home/mvu/.local/lib/python3.7/site-packages/sklearn/metrics/classification.py:1135: UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 due to no predicted samples.
+  'precision', 'predicted', average, warn_for)
+Model id 0 AU Validation 08:21: Eval_0 0.1699 Eval_1 0.9424 eval_res 0.5562
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1765/1765 [03:32<00:00,  8.29it/s]
+Model id 0 VA Validation 08:21: Eval_0 0.3086 Eval_1 0.4843 eval_res 0.7929
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1664/1664 [03:15<00:00,  8.51it/s]
+Model id 1 EXPR Validation 08:21: Eval_0 0.3247 Eval_1 0.4455 eval_res 0.3646
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 350/350 [00:41<00:00,  8.44it/s]
+Model id 1 AU Validation 08:21: Eval_0 0.1795 Eval_1 0.9456 eval_res 0.5626
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1765/1765 [03:32<00:00,  8.32it/s]
+Model id 1 VA Validation 08:21: Eval_0 0.3395 Eval_1 0.4874 eval_res 0.8269
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1664/1664 [03:15<00:00,  8.50it/s]
+Model id 2 EXPR Validation 08:21: Eval_0 0.3324 Eval_1 0.4485 eval_res 0.3707
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 350/350 [00:41<00:00,  8.42it/s]
+Model id 2 AU Validation 08:21: Eval_0 0.1919 Eval_1 0.9451 eval_res 0.5685
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1765/1765 [03:32<00:00,  8.32it/s]
+Model id 2 VA Validation 08:21: Eval_0 0.3479 Eval_1 0.4870 eval_res 0.8349
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1664/1664 [03:15<00:00,  8.51it/s]
+Model id 3 EXPR Validation 08:21: Eval_0 0.3253 Eval_1 0.4274 eval_res 0.3590
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 350/350 [00:41<00:00,  8.49it/s]
+Model id 3 AU Validation 08:21: Eval_0 0.1932 Eval_1 0.9463 eval_res 0.5697
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1765/1765 [03:31<00:00,  8.34it/s]
+Model id 3 VA Validation 08:21: Eval_0 0.3524 Eval_1 0.4768 eval_res 0.8293
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1664/1664 [03:15<00:00,  8.51it/s]
+Model id 4 EXPR Validation 08:21: Eval_0 0.3224 Eval_1 0.4423 eval_res 0.3620
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 350/350 [00:41<00:00,  8.48it/s]
+Model id 4 AU Validation 08:21: Eval_0 0.1886 Eval_1 0.9451 eval_res 0.5668
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1765/1765 [03:32<00:00,  8.31it/s]
+Model id 4 VA Validation 08:21: Eval_0 0.3543 Eval_1 0.4591 eval_res 0.8134
+Merged First method EXPR Validation 08:21: Eval_0 0.3389 Eval_1 0.4597 eval_res 0.3787
+Merged First method AU Validation 08:21: Eval_0 0.1828 Eval_1 0.9453 eval_res 0.5640
+Merged First method VA Validation 08:21: Eval_0 0.3517 Eval_1 0.4941 eval_res 0.8457
+Merged Second method EXPR Validation 08:21: Eval_0 0.3386 Eval_1 0.4552 eval_res 0.3771
+The best AU thresholds over models: [0.1823972  0.07081039 0.13026756 0.04179615 0.3001067  0.07159575
+0.04400642 0.19260739]
+Merged Second method AU Validation 08:21: Eval_0 0.3241 Eval_1 0.9305 eval_res 0.6273
+Merged Second method VA Validation 08:21: Eval_0 0.3100 Eval_1 0.4623 eval_res 0.7724
