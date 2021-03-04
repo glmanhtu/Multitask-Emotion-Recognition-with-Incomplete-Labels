@@ -18,35 +18,49 @@ def read_aff_wild2():
 	total_data = pickle.load(open(args.aff_wild2_pkl, 'rb'))
 	# training set
 	data = total_data['EXPR_Set']['Training_Set']
+	va_data = total_data['VA_Set']['Training_Set']
 	paths = []
 	labels = []
+	va_labels = []
 	for video in data.keys():
 		df = data[video]
+		if video in va_data.keys():
+			df = pd.merge(df, va_data[video], how='left', on='path').fillna(value=-2)
+		else:
+			df['valence'] = -2
+			df['arousal'] = -2
 		labels.append(df['label'].values.astype(np.float32))
+		va_labels.append(np.stack([df['valence'], df['arousal']], axis=1))
 		paths.append(df['path'].values)
+		assert len(paths) == len(labels) == len(va_labels)
 	# undersample the neutral samples by 10
 	# undersample the happy and sad samples by 20
 	paths = np.concatenate(paths, axis=0)
 	labels = np.concatenate(labels, axis=0)
+	va_labels = np.concatenate(va_labels, axis=0)
 	# neutral
 	keep_10 = np.array([True if i%10==0 else False for i in range(len(labels))])
 	to_drop = labels == 0
 	to_drop = to_drop * (~keep_10)
 	labels = labels[~to_drop]
 	paths = paths[~to_drop]
+	va_labels = va_labels[~to_drop]
 	# happy
 	keep_2 = np.array([True if i%2==0 else False for i in range(len(labels))])
 	to_drop = labels == 4
 	to_drop = to_drop * (~keep_2)
 	labels = labels[~to_drop]
 	paths = paths[~to_drop]
+	va_labels = va_labels[~to_drop]
 	# sadness
 	keep_2 = np.array([True if i%2==0 else False for i in range(len(labels))])
 	to_drop = labels == 5
 	to_drop = to_drop * (~keep_2)
 	labels = labels[~to_drop]
 	paths = paths[~to_drop]
-	data = {'label': labels, 'path': paths}
+	va_labels = va_labels[~to_drop]
+
+	data = {'label': labels, 'path': paths, 'va': va_labels}
 	# validation set
 	val_data = total_data['EXPR_Set']['Validation_Set']
 	paths = []
@@ -67,7 +81,9 @@ def merge_two_datasets():
 	# change the label integer, because of the different labelling in two datasets
 	ExpW_to_aff_wild2 = [1, 2, 3, 4, 5, 6, 0]
 	data_ExpW['label'] = np.array([ExpW_to_aff_wild2[x] for x in data_ExpW['label']])
+	data_ExpW['va'] = np.array([[-2., -2.] for _ in range(len(data_ExpW['path']))])
 	data_merged = {'label': np.concatenate((data_aff_wild2['label'], data_ExpW['label']), axis=0),
+				   'va': np.concatenate((data_aff_wild2['va'], data_ExpW['va']), axis=0),
 	                'path': list(data_aff_wild2['path']) +data_ExpW['path']}
 	print("Dataset\t"+"\t".join(Expr_list))
 	print("Aff_wild2 dataset:\t" +"\t".join([str(sum(data_aff_wild2['label']==i)) for i in range(len(Expr_list))]))

@@ -18,15 +18,23 @@ def read_aff_wild2():
 	total_data = pickle.load(open(args.aff_wild2_pkl, 'rb'))
 	# training set
 	train_data = total_data['VA_Set']['Training_Set']
+	expr_data = total_data['EXPR_Set']['Training_Set']
 	paths = []
 	labels = []
+	expr_labels = []
 	for video in train_data.keys():
 		data = train_data[video]
+		if video in expr_data.keys():
+			data = pd.merge(data, expr_data[video], how='left', on='path').fillna(value=-2)
+		else:
+			data['label'] = -2
 		labels.append(np.stack([data['valence'], data['arousal']], axis=1))
+		expr_labels.append(data['label'].values.astype(np.float32))
 		paths.append(data['path'].values)
 	paths = np.concatenate(paths, axis=0)
 	labels = np.concatenate(labels, axis=0)
-	train_data = {'label': labels, 'path': paths}
+	expr_labels = np.concatenate(expr_labels, axis=0)
+	train_data = {'label': labels, 'path': paths, 'expr': expr_labels}
 	# validation set
 	val_data = total_data['VA_Set']['Validation_Set']
 	paths = []
@@ -48,7 +56,8 @@ def merge_two_datasets():
 	index = [True if i%5 ==0 else False for i in range(length)]
 	aff_wild_train_labels = aff_wild_train_labels[index]
 	aff_wild_train_paths = aff_wild_train_paths[index]
-	data_aff_wild2 = {'label':aff_wild_train_labels, 'path':aff_wild_train_paths}
+	aff_wild_train_expr = data_aff_wild2['expr'][index]
+	data_aff_wild2 = {'label': aff_wild_train_labels, 'path': aff_wild_train_paths, 'expr': aff_wild_train_expr}
 	# downsample x 5 the training set in aff_wild
 	data_VA = pickle.load(open(args.VA_pkl, 'rb'))
 	data_VA = {**data_VA['Training_Set'], **data_VA['Validation_Set']}
@@ -60,8 +69,9 @@ def merge_two_datasets():
 		paths.append(data['path'])
 	paths = np.concatenate(paths, axis=0)
 	labels = np.concatenate(labels, axis=0)
-	data_VA = {'label':labels, 'path':paths}
+	data_VA = {'label':labels, 'path':paths, 'expr': np.full((len(paths)), -2)}
 	data_merged = {'label': np.concatenate((data_aff_wild2['label'], data_VA['label']), axis=0),
+				   'expr': np.concatenate((data_aff_wild2['expr'], data_VA['expr']), axis=0),
 	                'path': list(data_aff_wild2['path']) + list(data_VA['path'])}
 	print("Aff-wild2 :{}".format(len(data_aff_wild2['label'])))
 	print("AFEW_VA:{}".format(len(data_VA['label'])))

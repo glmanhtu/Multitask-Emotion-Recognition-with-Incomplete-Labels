@@ -8,7 +8,7 @@ parser = argparse.ArgumentParser(description='read two annotations files')
 parser.add_argument('--aff_wild2_pkl', type=str, default='/home/mvu/Documents/datasets/mixed/affwild-2/annotations.pkl')
 parser.add_argument('--affect_net_pkl', type=str,
                     default='/home/mvu/Documents/datasets/mixed/affectnet/annotations.pkl')
-parser.add_argument('--save_path', type=str, default='/home/mvu/Documents/datasets/mixed/affwild2_EXPR_VA_annotations.pkl')
+parser.add_argument('--save_path', type=str, default='/home/mvu/Documents/datasets/mixed/affectnet_EXPR_VA_annotations.pkl')
 args = parser.parse_args()
 Expr_list = ['Neutral', 'Anger', 'Disgust', 'Fear', 'Happiness', 'Sadness', 'Surprise']
 expr_mapping = [0, 4, 5, 6, 3, 2, 1]  # Map from Affectnet format to Affwild2 format
@@ -75,25 +75,25 @@ def calculate_weight(va_labels, expr_labels):
 
 
 def merge_two_datasets():
-    # data_affect = read_affect_net()
-    data_aff_wild2 = read_aff_wild2()
+    data_affect = read_affect_net()
+    # data_aff_wild2 = read_aff_wild2()
     # paths = np.concatenate([data_affect['path'], data_aff_wild2['path']], axis=0)
     # exprs = np.concatenate([data_affect['EXPR'], data_aff_wild2['EXPR']], axis=0)
     # vas = np.concatenate([data_affect['VA'], data_aff_wild2['VA']], axis=0)
-    paths = data_aff_wild2['path']
-    exprs = data_aff_wild2['EXPR']
-    vas = data_aff_wild2['VA']
+    paths = data_affect['path']
+    exprs = data_affect['EXPR']
+    vas = data_affect['VA']
 
-    origin_data_size = len(paths)
-
-    while len(paths) / float(origin_data_size) > 0.5:
-        weights = calculate_weight(vas, exprs)
-        sort_idx_weights = np.argsort(weights)
-        n_to_del = int(0.01 * len(paths))
-        idx_to_del = sort_idx_weights[:n_to_del]
-        paths = np.delete(paths, idx_to_del, axis=0)
-        vas = np.delete(vas, idx_to_del, axis=0)
-        exprs = np.delete(exprs, idx_to_del, axis=0)
+    # origin_data_size = len(paths)
+    #
+    # while len(paths) / float(origin_data_size) > 0.7:
+    #     weights = calculate_weight(vas, exprs)
+    #     sort_idx_weights = np.argsort(weights)
+    #     n_to_del = int(0.01 * len(paths))
+    #     idx_to_del = sort_idx_weights[:n_to_del]
+    #     paths = np.delete(paths, idx_to_del, axis=0)
+    #     vas = np.delete(vas, idx_to_del, axis=0)
+    #     exprs = np.delete(exprs, idx_to_del, axis=0)
 
     plot_distribution_va(vas)
     plot_distribution_expr(exprs)
