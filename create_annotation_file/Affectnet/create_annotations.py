@@ -28,7 +28,7 @@ def show_landmarks(image, batch_landmarks, rect=None):
     plt.show()
 
 
-def read_data(img_dir, annotation_file, annotations, image_dir, is_train=False, save_img=True):
+def read_data(img_dir, annotation_file, annotations, image_dir, is_train=False, save_img=False):
     keys = ['subDirectory_filePath', 'face_x', 'face_y', 'face_width', 'face_height', 'facial_landmarks', 'expression',
             'valence', 'arousal']
     cropper = CentralCrop(112)

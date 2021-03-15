@@ -1,3 +1,4 @@
+import math
 import pickle
 import os
 import numpy as np
@@ -14,6 +15,42 @@ parser.add_argument('--ExpW_pkl', type=str, default = '/home/mvu/Documents/datas
 parser.add_argument('--save_path', type=str, default='/home/mvu/Documents/datasets/mixed/mixed_EXPR_annotations.pkl')
 args = parser.parse_args()
 Expr_list = ['Neutral','Anger','Disgust','Fear','Happiness','Sadness','Surprise']
+share_vids = {'134', '13-30-1920x1080', '128', '127', '137', '157', '45-24-1280x720', '136', '158', '163',
+              '125-25-1280x720', '24-30-1920x1080-2', '162', '76-30-640x280', '144', '129', '27-60-1280x720',
+              'video63', 'video67', '131', '122-60-1920x1080-2', '161', '135-24-1920x1080_left', '122', '53-30-360x480',
+              '146', '135', '153', '8-30-1280x720', '150', '155', '133', '125', '121', '140', '48-30-720x1280',
+              '140-30-632x360', '114-30-1280x720', '122-60-1920x1080-3', '151', '119-30-848x480', '120-30-1280x720',
+              'video66', 'video94', '154', '77-30-1280x720', '72-30-1280x720', '82-25-854x480', '12-24-1920x1080',
+              '121-24-1920x1080', '129-24-1280x720', '1-30-1280x720', '123', '28-30-1280x720-2', '282', '117', '143',
+              '21-24-1920x1080', '118', '156', '132-30-426x240', '132', '84-30-1920x1080', 'video58',
+              '123-25-1920x1080', '25-25-600x480', '160', '107-30-640x480', '26-60-1280x720', '124-30-720x1280',
+              '113-60-1280x720', 'video61', '131-30-1920x1080', '122-60-1920x1080-4', '138', '112-30-640x360', '148',
+              '149', '141', 'video79', '126', '81-30-576x360', 'video93', '120', 'video1', '115-30-1280x720'}
+
+
+def filtering(data):
+	# From https://arxiv.org/pdf/2002.03399.pdf
+
+	# to_del = []
+	# for index, row in data.iterrows():
+	# 	# The expression is labeled as happy, but the valence is labeled as negative
+	# 	if row['label'] == 4 and row['valence'] != -2 and row['valence'] < 0:
+	# 		to_del.append(index)
+	#
+	# 	# The expression is labeled as sad, but the valence is labeled as positive
+	# 	elif row['label'] == 5 and row['valence'] > 0:
+	# 		to_del.append(index)
+	#
+	# 	# The expression is labeled as neutral, but sqrt(valence^2 + arousal^2) > 0.5
+	# 	elif row['label'] == 0:
+	# 		if math.sqrt(row['valence'] ** 2 + row['arousal'] ** 2) > 0.5:
+	# 			to_del.append(index)
+	# filtered_data = data.drop(data.index[to_del])
+	# print(f'Filtered {len(data) - len(filtered_data)} records')
+	# return filtered_data
+    return data
+
+
 def read_aff_wild2():
 	total_data = pickle.load(open(args.aff_wild2_pkl, 'rb'))
 	# training set
@@ -26,6 +63,7 @@ def read_aff_wild2():
 		df = data[video]
 		if video in va_data.keys():
 			df = pd.merge(df, va_data[video], how='left', on='path').fillna(value=-2)
+			df = filtering(df)
 		else:
 			df['valence'] = -2
 			df['arousal'] = -2
@@ -66,6 +104,8 @@ def read_aff_wild2():
 	paths = []
 	labels = []
 	for video in val_data.keys():
+		# if video in share_vids:
+		# 	continue
 		df = val_data[video]
 		labels.append(df['label'].values.astype(np.float32))
 		paths.append(df['path'].values)

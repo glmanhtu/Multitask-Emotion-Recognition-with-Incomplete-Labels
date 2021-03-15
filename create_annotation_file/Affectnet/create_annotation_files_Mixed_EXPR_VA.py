@@ -1,4 +1,5 @@
 import argparse
+import math
 import pickle
 import numpy as np
 import pandas as pd
@@ -8,16 +9,43 @@ parser = argparse.ArgumentParser(description='read two annotations files')
 parser.add_argument('--aff_wild2_pkl', type=str, default='/home/mvu/Documents/datasets/mixed/affwild-2/annotations.pkl')
 parser.add_argument('--affect_net_pkl', type=str,
                     default='/home/mvu/Documents/datasets/mixed/affectnet/annotations.pkl')
-parser.add_argument('--save_path', type=str, default='/home/mvu/Documents/datasets/mixed/affectnet_EXPR_VA_annotations.pkl')
+parser.add_argument('--save_path', type=str,
+                    default='/home/mvu/Documents/datasets/mixed/affwild2_EXPR_VA_annotations.pkl')
 args = parser.parse_args()
 Expr_list = ['Neutral', 'Anger', 'Disgust', 'Fear', 'Happiness', 'Sadness', 'Surprise']
 expr_mapping = [0, 4, 5, 6, 3, 2, 1]  # Map from Affectnet format to Affwild2 format
+
+
+def filtering(paths, exprs, vas):
+    # From https://arxiv.org/pdf/2002.03399.pdf
+
+    # to_del = []
+    # for index, row in enumerate(paths):
+    #     # The expression is labeled as happy, but the valence is labeled as negative
+    #     if exprs[index] == 4 and vas[index][0] != -2 and vas[index][0] < 0:
+    #         to_del.append(index)
+    #
+    #     # The expression is labeled as sad, but the valence is labeled as positive
+    #     elif exprs[index] == 5 and vas[index][0] > 0:
+    #         to_del.append(index)
+    #
+    #     # The expression is labeled as neutral, but sqrt(valence^2 + arousal^2) > 0.5
+    #     elif exprs[index] == 0:
+    #         if math.sqrt(vas[index][0] ** 2 + vas[index][1] ** 2) > 0.5:
+    #             to_del.append(index)
+    # paths = np.delete(paths, to_del, axis=0)
+    # vas = np.delete(vas, to_del, axis=0)
+    # exprs = np.delete(exprs, to_del, axis=0)
+    # print(f'Filtered {len(to_del)} records')
+    return paths, exprs, vas
 
 
 def read_aff_wild2():
     total_data = pickle.load(open(args.aff_wild2_pkl, 'rb'))
     expr_data = total_data['EXPR_Set']['Training_Set']
     va_data = total_data['VA_Set']['Training_Set']
+    all_train_vids = set(list(expr_data.keys()) + list(va_data.keys()))
+    all_val_vids = set(list(total_data['EXPR_Set']['Validation_Set']) + list(total_data['VA_Set']['Validation_Set']))
     expr_va_keys = list(set(expr_data.keys()) & set(va_data.keys()))
     paths, expr, va = [], [], []
     for key in expr_va_keys:
@@ -29,6 +57,12 @@ def read_aff_wild2():
     paths = np.concatenate(paths, axis=0)
     expr = np.concatenate(expr, axis=0)
     va = np.concatenate(va, axis=0)
+
+    length = len(paths)
+    index = [True if i % 3 == 0 else False for i in range(length)]
+    paths = paths[index]
+    expr = expr[index]
+    va = va[index]
 
     return {
         'path': paths,
@@ -75,14 +109,17 @@ def calculate_weight(va_labels, expr_labels):
 
 
 def merge_two_datasets():
-    data_affect = read_affect_net()
-    # data_aff_wild2 = read_aff_wild2()
+    # data_affect = read_affect_net()
+    data_aff_wild2 = read_aff_wild2()
     # paths = np.concatenate([data_affect['path'], data_aff_wild2['path']], axis=0)
     # exprs = np.concatenate([data_affect['EXPR'], data_aff_wild2['EXPR']], axis=0)
     # vas = np.concatenate([data_affect['VA'], data_aff_wild2['VA']], axis=0)
-    paths = data_affect['path']
-    exprs = data_affect['EXPR']
-    vas = data_affect['VA']
+    # paths = data_affect['path']
+    # exprs = data_affect['EXPR']
+    # vas = data_affect['VA']
+    paths = data_aff_wild2['path']
+    exprs = data_aff_wild2['EXPR']
+    vas = data_aff_wild2['VA']
 
     # origin_data_size = len(paths)
     #
@@ -94,6 +131,8 @@ def merge_two_datasets():
     #     paths = np.delete(paths, idx_to_del, axis=0)
     #     vas = np.delete(vas, idx_to_del, axis=0)
     #     exprs = np.delete(exprs, idx_to_del, axis=0)
+
+    paths, exprs, vas = filtering(paths, exprs, vas)
 
     plot_distribution_va(vas)
     plot_distribution_expr(exprs)
